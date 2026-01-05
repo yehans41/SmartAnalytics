@@ -10,7 +10,7 @@ services:
       MYSQL_USER: smartanalytics
       MYSQL_PASSWORD: smartpass123
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql
@@ -28,7 +28,7 @@ services:
       dockerfile: Dockerfile.mlflow
     container_name: smartanalytics_mlflow
     ports:
-      - "5000:5000"
+      - "5002:5000"
     volumes:
       - ./mlruns:/mlflow/mlruns
       - ./models:/mlflow/models

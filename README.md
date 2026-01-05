@@ -84,8 +84,8 @@ make train           # Train all models
 
 - **📊 Dashboard**: http://localhost:8501
 - **🔬 API Docs**: http://localhost:8000/docs
-- **📈 MLflow**: http://localhost:5000
-- **💾 Database**: localhost:3306 (user: smartanalytics, pass: smartpass123)
+- **📈 MLflow**: http://localhost:5002
+- **💾 Database**: localhost:3307 (user: smartanalytics, pass: smartpass123)
 
 ---
 

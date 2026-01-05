@@ -26,6 +26,7 @@ mlflow==2.9.2
 # API and Serving (Phase 5)
 fastapi==0.108.0
 uvicorn[standard]==0.25.0
+streamlit==1.29.0
 
 # Visualization
 matplotlib==3.8.2
