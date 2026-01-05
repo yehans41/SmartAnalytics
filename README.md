@@ -51,7 +51,7 @@ python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
-pip install -r requirements.txt
+pip install -r requirements/requirements.txt
 
 # Install in editable mode
 pip install -e .
@@ -133,13 +133,22 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for detailed diagrams and techn
 
 ## 📚 Documentation
 
+### Core Documentation
 - **[Architecture](docs/ARCHITECTURE.md)** - System design and technical architecture
 - **[API Guide](docs/API_GUIDE.md)** - REST API documentation with examples
-- **[Model Cards](docs/model_cards/)** - Auto-generated model documentation
-- **Phase Summaries**:
-  - [Phase 4: Model Training](PHASE4_SUMMARY.md)
-  - [Phase 5: API & Dashboard](PHASE5_SUMMARY.md)
-  - [Phase 6: MLOps Polish](PHASE6_SUMMARY.md)
+
+### Guides
+- **[Quick Start](docs/guides/QUICKSTART.md)** - Fast setup guide
+- **[Getting Started](docs/guides/GETTING_STARTED.md)** - Detailed setup instructions
+- **[Implementation Guide](docs/guides/IMPLEMENTATION_GUIDE.md)** - Development guide
+- **[Model Training](docs/guides/PHASE4_MODELS.md)** - ML model usage guide
+
+### Phase Summaries
+- **[Phase 1](docs/summaries/PHASE1_COMPLETE.md)** - Data Ingestion
+- **[Phase 4](docs/summaries/PHASE4_SUMMARY.md)** - Model Training
+- **[Phase 5](docs/summaries/PHASE5_SUMMARY.md)** - API & Dashboard
+- **[Phase 6](docs/summaries/PHASE6_SUMMARY.md)** - MLOps Polish
+- **[Project Status](docs/summaries/PROJECT_STATUS.md)** - Current state
 
 ---
 

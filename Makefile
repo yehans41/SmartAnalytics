@@ -34,7 +34,7 @@ help:
 
 install:
 	$(PYTHON) -m pip install --upgrade pip
-	pip install -r requirements.txt
+	pip install -r requirements/requirements.txt
 	pre-commit install
 
 test:
