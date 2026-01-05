@@ -1,0 +1,101 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: smartanalytics_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: smartanalytics_db
+      MYSQL_USER: smartanalytics
+      MYSQL_PASSWORD: smartpass123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - smartanalytics_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mlflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.mlflow
+    container_name: smartanalytics_mlflow
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/mlflow/mlruns
+      - ./models:/mlflow/models
+    environment:
+      - MLFLOW_BACKEND_STORE_URI=sqlite:///mlflow/mlruns/mlflow.db
+      - MLFLOW_DEFAULT_ARTIFACT_ROOT=/mlflow/models
+    networks:
+      - smartanalytics_network
+    command: mlflow server --host 0.0.0.0 --port 5000
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smartanalytics_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app/src
+      - ./models:/app/models
+      - ./data:/app/data
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=smartanalytics
+      - MYSQL_PASSWORD=smartpass123
+      - MYSQL_DATABASE=smartanalytics_db
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mlflow:
+        condition: service_started
+    networks:
+      - smartanalytics_network
+    command: uvicorn src.serving.api:app --host 0.0.0.0 --port 8000 --reload
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smartanalytics_dashboard
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./src:/app/src
+      - ./models:/app/models
+      - ./data:/app/data
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=smartanalytics
+      - MYSQL_PASSWORD=smartpass123
+      - MYSQL_DATABASE=smartanalytics_db
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mlflow:
+        condition: service_started
+    networks:
+      - smartanalytics_network
+    command: streamlit run src/serving/dashboard.py --server.port=8501 --server.address=0.0.0.0
+
+volumes:
+  mysql_data:
+
+networks:
+  smartanalytics_network:
+    driver: bridge

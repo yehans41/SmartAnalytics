@@ -1,0 +1,182 @@
+# Smart Analytics Configuration
+
+# Database Configuration
+database:
+  host: ${MYSQL_HOST:localhost}
+  port: ${MYSQL_PORT:3306}
+  user: ${MYSQL_USER:smartanalytics}
+  password: ${MYSQL_PASSWORD:your_password}
+  database: ${MYSQL_DATABASE:smartanalytics_db}
+  pool_size: 10
+  max_overflow: 20
+
+# Data Configuration
+data:
+  source: "nyc_taxi"
+  raw_path: "./data/raw"
+  processed_path: "./data/processed"
+  features_path: "./data/features"
+  sample_size: null  # null for full dataset, or specify number
+  random_seed: 42
+
+# Data Ingestion
+ingestion:
+  dataset_url: "https://www.kaggle.com/datasets/elemento/nyc-yellow-taxi-trip-data"
+  fallback_url: "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-01.parquet"
+  file_format: "parquet"
+  chunk_size: 100000
+  max_rows: null  # null for all rows
+
+# Data Validation
+validation:
+  null_threshold: 0.3  # max 30% null values allowed
+  outlier_method: "iqr"  # 'iqr' or 'zscore'
+  outlier_threshold: 3
+  duplicate_threshold: 0.05
+  schema_strict: true
+
+# Data Processing
+processing:
+  handle_missing: "drop"  # 'drop', 'impute', 'flag'
+  imputation_strategy: "median"  # 'mean', 'median', 'mode'
+  outlier_handling: "clip"  # 'clip', 'remove', 'cap'
+  scaling_method: "standard"  # 'standard', 'minmax', 'robust'
+
+# Feature Engineering
+features:
+  datetime_features: true
+  cyclical_encoding: true
+  interaction_features: false
+  polynomial_degree: 2
+  text_features: false
+  embedding_dim: 50
+
+# Model Training
+training:
+  test_size: 0.2
+  validation_size: 0.1
+  random_seed: 42
+  cross_validation: true
+  cv_folds: 5
+
+  # Regression
+  regression:
+    enabled: true
+    target: "trip_duration"  # or 'fare_amount'
+    models:
+      - linear
+      - ridge
+      - lasso
+      - random_forest
+      - xgboost
+      - mlp
+
+  # Classification
+  classification:
+    enabled: true
+    target: "payment_type"  # or 'tip_category'
+    models:
+      - logistic
+      - random_forest
+      - xgboost
+      - mlp
+
+  # Dimensionality Reduction
+  dim_reduction:
+    enabled: true
+    methods:
+      - pca
+      - lda
+    n_components: 10
+
+  # Clustering
+  clustering:
+    enabled: true
+    methods:
+      - kmeans
+      - gmm
+    n_clusters: 5
+
+# Model Hyperparameters
+hyperparameters:
+  random_forest:
+    n_estimators: [100, 200, 300]
+    max_depth: [10, 20, 30, null]
+    min_samples_split: [2, 5, 10]
+
+  xgboost:
+    n_estimators: [100, 200, 300]
+    max_depth: [3, 5, 7]
+    learning_rate: [0.01, 0.1, 0.3]
+    subsample: [0.8, 1.0]
+
+  mlp:
+    hidden_sizes: [[64, 32], [128, 64], [256, 128, 64]]
+    learning_rate: [0.001, 0.0001]
+    batch_size: [32, 64, 128]
+    epochs: [50, 100]
+
+# MLflow Configuration
+mlflow:
+  tracking_uri: ${MLFLOW_TRACKING_URI:./mlruns}
+  experiment_name: ${MLFLOW_EXPERIMENT_NAME:nyc_taxi_analysis}
+  run_name_prefix: "run"
+  artifact_location: "./models/artifacts"
+  log_models: true
+  log_artifacts: true
+
+# Model Registry
+registry:
+  path: "./models/registry"
+  versioning: true
+  production_alias: "production"
+  staging_alias: "staging"
+
+# API Configuration
+api:
+  host: ${API_HOST:0.0.0.0}
+  port: ${API_PORT:8000}
+  workers: ${API_WORKERS:4}
+  reload: false
+  log_level: "info"
+
+# LLM Configuration (Optional)
+llm:
+  enabled: false
+  provider: "openai"
+  model: ${LLM_MODEL:gpt-4-turbo-preview}
+  api_key: ${OPENAI_API_KEY:}
+  temperature: 0.7
+  max_tokens: 2000
+
+  # Model Card Generation
+  model_card:
+    enabled: true
+    template_path: "./docs/model_card_template.md"
+
+  # RAG for Insights
+  rag:
+    enabled: true
+    chunk_size: 1000
+    chunk_overlap: 200
+    embedding_model: "text-embedding-ada-002"
+
+# Logging
+logging:
+  level: ${LOG_LEVEL:INFO}
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: ${LOG_FILE:./logs/app.log}
+  rotation: "1 day"
+  retention: "30 days"
+
+# Monitoring
+monitoring:
+  data_drift:
+    enabled: true
+    reference_window: 30
+    detection_method: "ks_test"
+    threshold: 0.05
+
+  model_performance:
+    enabled: true
+    alert_threshold: 0.1  # 10% degradation

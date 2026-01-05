@@ -1,0 +1,33 @@
+# Minimal requirements for Phase 1: Data Ingestion
+# Use this if you have issues with the full requirements.txt
+
+# Core Dependencies
+python-dotenv==1.0.0
+pydantic==2.5.0
+pyyaml==6.0.1
+
+# Data Processing
+pandas==2.1.4
+numpy==1.26.2
+
+# Database
+mysql-connector-python==8.2.0
+sqlalchemy==2.0.23
+pymysql==1.1.0
+
+# Utilities
+requests==2.31.0
+tqdm==4.66.1
+python-dateutil==2.8.2
+joblib==1.3.2
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+
+# Notebook
+jupyter==1.0.0
+ipykernel==6.27.1
+matplotlib==3.8.2
+seaborn==0.13.0

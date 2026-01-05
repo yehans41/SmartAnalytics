@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# Data
+data/raw/*
+data/processed/*
+data/features/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/features/.gitkeep
+*.csv
+*.parquet
+*.pkl
+*.joblib
+
+# Models
+models/registry/*
+models/artifacts/*
+mlruns/
+wandb/
+*.h5
+*.pt
+*.pth
+*.onnx
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+.env
+.env.local
+
+# Logs
+logs/
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# ML artifacts
+*.model
+*.bin
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# OS
+Thumbs.db
