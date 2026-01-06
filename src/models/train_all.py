@@ -79,7 +79,7 @@ class ModelTrainingOrchestrator:
         LIMIT {limit}
         """
 
-        with self.db_manager.get_connection() as conn:
+        with self.db_manager.engine as conn:
             df = pd.read_sql(query, conn)
 
         logger.info(f"Loaded {len(df)} rows with {len(df.columns)} columns")

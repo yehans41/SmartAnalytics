@@ -1,0 +1,529 @@
+{
+  "timestamp": "2026-01-05 03:51:04",
+  "table_name": "processed_taxi_trips",
+  "summary": {
+    "total_rows": 9418,
+    "total_columns": 23,
+    "memory_usage_mb": 2.1018409729003906,
+    "dtypes": {
+      "vendor_id": "int64",
+      "pickup_datetime": "datetime64[ns]",
+      "dropoff_datetime": "datetime64[ns]",
+      "passenger_count": "int64",
+      "trip_distance": "float64",
+      "rate_code": "float64",
+      "store_and_fwd_flag": "object",
+      "pickup_location_id": "int64",
+      "dropoff_location_id": "int64",
+      "payment_type": "int64",
+      "fare_amount": "float64",
+      "extra": "float64",
+      "mta_tax": "float64",
+      "tip_amount": "float64",
+      "tolls_amount": "float64",
+      "total_amount": "float64",
+      "trip_duration": "float64",
+      "trip_duration_minutes": "float64",
+      "speed_mph": "float64",
+      "hour_of_day": "int64",
+      "day_of_week": "int64",
+      "month": "int64",
+      "is_weekend": "int64"
+    },
+    "date_range": {
+      "start": "2023-01-01 00:05:31",
+      "end": "2023-01-31 23:33:11",
+      "days": 30
+    },
+    "numeric_summary": {
+      "vendor_id": {
+        "count": 9418.0,
+        "mean": 1.7479294967084307,
+        "std": 0.434224578922727,
+        "min": 1.0,
+        "25%": 1.0,
+        "50%": 2.0,
+        "75%": 2.0,
+        "max": 2.0
+      },
+      "passenger_count": {
+        "count": 9418.0,
+        "mean": 1.3913782119345934,
+        "std": 0.8729033595538683,
+        "min": 1.0,
+        "25%": 1.0,
+        "50%": 1.0,
+        "75%": 1.0,
+        "max": 6.0
+      },
+      "trip_distance": {
+        "count": 9418.0,
+        "mean": 2.8774739859842855,
+        "std": 2.7616870392504262,
+        "min": 0.01,
+        "25%": 1.09,
+        "50%": 1.8,
+        "75%": 3.2875,
+        "max": 9.879999999999999
+      },
+      "rate_code": {
+        "count": 9418.0,
+        "mean": 1.395731577829688,
+        "std": 5.795569673833922,
+        "min": 1.0,
+        "25%": 1.0,
+        "50%": 1.0,
+        "75%": 1.0,
+        "max": 99.0
+      },
+      "pickup_location_id": {
+        "count": 9418.0,
+        "mean": 166.10108303249098,
+        "std": 63.60570454218929,
+        "min": 4.0,
+        "25%": 132.0,
+        "50%": 162.0,
+        "75%": 234.0,
+        "max": 265.0
+      },
+      "dropoff_location_id": {
+        "count": 9418.0,
+        "mean": 164.74187725631768,
+        "std": 69.51163362073845,
+        "min": 1.0,
+        "25%": 114.0,
+        "50%": 162.0,
+        "75%": 234.0,
+        "max": 265.0
+      },
+      "payment_type": {
+        "count": 9418.0,
+        "mean": 1.1944149500955616,
+        "std": 0.4361086366395187,
+        "min": 1.0,
+        "25%": 1.0,
+        "50%": 1.0,
+        "75%": 1.0,
+        "max": 4.0
+      },
+      "fare_amount": {
+        "count": 9418.0,
+        "mean": 17.246413251221067,
+        "std": 12.841137495319044,
+        "min": 0.0,
+        "25%": 8.6,
+        "50%": 12.8,
+        "75%": 19.8,
+        "max": 53.400000000000006
+      },
+      "extra": {
+        "count": 9418.0,
+        "mean": 1.5606285835633893,
+        "std": 1.7674796740838026,
+        "min": 0.0,
+        "25%": 0.0,
+        "50%": 1.0,
+        "75%": 2.5,
+        "max": 11.25
+      },
+      "mta_tax": {
+        "count": 9418.0,
+        "mean": 0.497504778084519,
+        "std": 0.03523516211320302,
+        "min": 0.0,
+        "25%": 0.5,
+        "50%": 0.5,
+        "75%": 0.5,
+        "max": 0.5
+      },
+      "tip_amount": {
+        "count": 9418.0,
+        "mean": 3.2931822042896584,
+        "std": 3.2061043330012113,
+        "min": 0.0,
+        "25%": 1.0,
+        "50%": 2.78,
+        "75%": 4.2,
+        "max": 13.8
+      },
+      "tolls_amount": {
+        "count": 9418.0,
+        "mean": 0.5022488851136122,
+        "std": 1.9410767500602424,
+        "min": 0.0,
+        "25%": 0.0,
+        "50%": 0.0,
+        "75%": 0.0,
+        "max": 33.56
+      },
+      "total_amount": {
+        "count": 9418.0,
+        "mean": 25.539887449564663,
+        "std": 15.716445334539308,
+        "min": 1.0,
+        "25%": 15.47,
+        "50%": 20.13,
+        "75%": 28.5,
+        "max": 67.59
+      },
+      "trip_duration": {
+        "count": 9418.0,
+        "mean": 918.557867912508,
+        "std": 2231.9740963266686,
+        "min": 2.0,
+        "25%": 432.0,
+        "50%": 684.0,
+        "75%": 1081.0,
+        "max": 86264.0
+      },
+      "trip_duration_minutes": {
+        "count": 9418.0,
+        "mean": 15.3092977985418,
+        "std": 37.199568272111144,
+        "min": 0.03333333333333333,
+        "25%": 7.2,
+        "50%": 11.4,
+        "75%": 18.016666666666666,
+        "max": 1437.7333333333333
+      },
+      "speed_mph": {
+        "count": 9418.0,
+        "mean": 11.50440886577396,
+        "std": 5.817081387509734,
+        "min": 0.018989790057321033,
+        "25%": 7.90118227518153,
+        "50%": 10.191776983025516,
+        "75%": 13.515809487841118,
+        "max": 120.0
+      },
+      "hour_of_day": {
+        "count": 9418.0,
+        "mean": 14.192716075599915,
+        "std": 5.711602966295778,
+        "min": 0.0,
+        "25%": 11.0,
+        "50%": 15.0,
+        "75%": 19.0,
+        "max": 23.0
+      },
+      "day_of_week": {
+        "count": 9418.0,
+        "mean": 3.0106179655977914,
+        "std": 2.0083963660060014,
+        "min": 0.0,
+        "25%": 1.0,
+        "50%": 3.0,
+        "75%": 5.0,
+        "max": 6.0
+      },
+      "month": {
+        "count": 9418.0,
+        "mean": 1.0,
+        "std": 0.0,
+        "min": 1.0,
+        "25%": 1.0,
+        "50%": 1.0,
+        "75%": 1.0,
+        "max": 1.0
+      },
+      "is_weekend": {
+        "count": 9418.0,
+        "mean": 0.29125079634741985,
+        "std": 0.4543629499714832,
+        "min": 0.0,
+        "25%": 0.0,
+        "50%": 0.0,
+        "75%": 1.0,
+        "max": 1.0
+      }
+    }
+  },
+  "null_info": {
+    "null_counts": {
+      "vendor_id": 0,
+      "pickup_datetime": 0,
+      "dropoff_datetime": 0,
+      "passenger_count": 0,
+      "trip_distance": 0,
+      "rate_code": 0,
+      "store_and_fwd_flag": 0,
+      "pickup_location_id": 0,
+      "dropoff_location_id": 0,
+      "payment_type": 0,
+      "fare_amount": 0,
+      "extra": 0,
+      "mta_tax": 0,
+      "tip_amount": 0,
+      "tolls_amount": 0,
+      "total_amount": 0,
+      "trip_duration": 0,
+      "trip_duration_minutes": 0,
+      "speed_mph": 0,
+      "hour_of_day": 0,
+      "day_of_week": 0,
+      "month": 0,
+      "is_weekend": 0
+    },
+    "null_percentages": {
+      "vendor_id": 0.0,
+      "pickup_datetime": 0.0,
+      "dropoff_datetime": 0.0,
+      "passenger_count": 0.0,
+      "trip_distance": 0.0,
+      "rate_code": 0.0,
+      "store_and_fwd_flag": 0.0,
+      "pickup_location_id": 0.0,
+      "dropoff_location_id": 0.0,
+      "payment_type": 0.0,
+      "fare_amount": 0.0,
+      "extra": 0.0,
+      "mta_tax": 0.0,
+      "tip_amount": 0.0,
+      "tolls_amount": 0.0,
+      "total_amount": 0.0,
+      "trip_duration": 0.0,
+      "trip_duration_minutes": 0.0,
+      "speed_mph": 0.0,
+      "hour_of_day": 0.0,
+      "day_of_week": 0.0,
+      "month": 0.0,
+      "is_weekend": 0.0
+    },
+    "total_nulls": 0,
+    "columns_with_nulls": 0
+  },
+  "outlier_info": {
+    "vendor_id": {
+      "count": 0,
+      "percentage": 0.0,
+      "lower_bound": -0.5,
+      "upper_bound": 3.5
+    },
+    "passenger_count": {
+      "count": 2266,
+      "percentage": 24.06,
+      "lower_bound": 1.0,
+      "upper_bound": 1.0
+    },
+    "trip_distance": {
+      "count": 1222,
+      "percentage": 12.98,
+      "lower_bound": -2.20625,
+      "upper_bound": 6.58375
+    },
+    "rate_code": {
+      "count": 415,
+      "percentage": 4.41,
+      "lower_bound": 1.0,
+      "upper_bound": 1.0
+    },
+    "pickup_location_id": {
+      "count": 0,
+      "percentage": 0.0,
+      "lower_bound": -21.0,
+      "upper_bound": 387.0
+    },
+    "dropoff_location_id": {
+      "count": 0,
+      "percentage": 0.0,
+      "lower_bound": -66.0,
+      "upper_bound": 414.0
+    },
+    "payment_type": {
+      "count": 1715,
+      "percentage": 18.21,
+      "lower_bound": 1.0,
+      "upper_bound": 1.0
+    },
+    "fare_amount": {
+      "count": 986,
+      "percentage": 10.47,
+      "lower_bound": -8.200000000000001,
+      "upper_bound": 36.6
+    },
+    "extra": {
+      "count": 134,
+      "percentage": 1.42,
+      "lower_bound": -3.75,
+      "upper_bound": 6.25
+    },
+    "mta_tax": {
+      "count": 47,
+      "percentage": 0.5,
+      "lower_bound": 0.5,
+      "upper_bound": 0.5
+    },
+    "tip_amount": {
+      "count": 674,
+      "percentage": 7.16,
+      "lower_bound": -3.8000000000000007,
+      "upper_bound": 9.0
+    },
+    "tolls_amount": {
+      "count": 672,
+      "percentage": 7.14,
+      "lower_bound": 0.0,
+      "upper_bound": 0.0
+    },
+    "total_amount": {
+      "count": 1058,
+      "percentage": 11.23,
+      "lower_bound": -4.0749999999999975,
+      "upper_bound": 48.045
+    },
+    "trip_duration": {
+      "count": 540,
+      "percentage": 5.73,
+      "lower_bound": -541.5,
+      "upper_bound": 2054.5
+    },
+    "trip_duration_minutes": {
+      "count": 540,
+      "percentage": 5.73,
+      "lower_bound": -9.025000000000002,
+      "upper_bound": 34.24166666666667
+    },
+    "speed_mph": {
+      "count": 500,
+      "percentage": 5.31,
+      "lower_bound": -0.5207585438078501,
+      "upper_bound": 21.937750306830498
+    },
+    "hour_of_day": {
+      "count": 0,
+      "percentage": 0.0,
+      "lower_bound": -1.0,
+      "upper_bound": 31.0
+    },
+    "day_of_week": {
+      "count": 0,
+      "percentage": 0.0,
+      "lower_bound": -5.0,
+      "upper_bound": 11.0
+    },
+    "month": {
+      "count": 0,
+      "percentage": 0.0,
+      "lower_bound": 1.0,
+      "upper_bound": 1.0
+    },
+    "is_weekend": {
+      "count": 0,
+      "percentage": 0.0,
+      "lower_bound": -1.5,
+      "upper_bound": 2.5
+    }
+  },
+  "validation_results": {
+    "total_checks": 15,
+    "passed": 15,
+    "failed": 0,
+    "results": [
+      {
+        "metric": "schema",
+        "passed": true,
+        "value": 1.0,
+        "threshold": 1.0,
+        "message": "All required columns present"
+      },
+      {
+        "metric": "duplicates",
+        "passed": "True",
+        "value": 0.0,
+        "threshold": 0.05,
+        "message": "0 duplicates (0.00%)"
+      },
+      {
+        "metric": "outliers_passenger_count",
+        "passed": true,
+        "value": 0.24060310044595457,
+        "threshold": 0.1,
+        "message": "passenger_count: 2,266 outliers (24.06%)"
+      },
+      {
+        "metric": "outliers_trip_distance",
+        "passed": true,
+        "value": 0.12975153960501168,
+        "threshold": 0.1,
+        "message": "trip_distance: 1,222 outliers (12.98%)"
+      },
+      {
+        "metric": "outliers_rate_code",
+        "passed": true,
+        "value": 0.04406455723083457,
+        "threshold": 0.1,
+        "message": "rate_code: 415 outliers (4.41%)"
+      },
+      {
+        "metric": "outliers_payment_type",
+        "passed": true,
+        "value": 0.1820981100021236,
+        "threshold": 0.1,
+        "message": "payment_type: 1,715 outliers (18.21%)"
+      },
+      {
+        "metric": "outliers_fare_amount",
+        "passed": true,
+        "value": 0.10469314079422383,
+        "threshold": 0.1,
+        "message": "fare_amount: 986 outliers (10.47%)"
+      },
+      {
+        "metric": "outliers_extra",
+        "passed": true,
+        "value": 0.01422807390104056,
+        "threshold": 0.1,
+        "message": "extra: 134 outliers (1.42%)"
+      },
+      {
+        "metric": "outliers_mta_tax",
+        "passed": true,
+        "value": 0.004990443830961987,
+        "threshold": 0.1,
+        "message": "mta_tax: 47 outliers (0.50%)"
+      },
+      {
+        "metric": "outliers_tip_amount",
+        "passed": true,
+        "value": 0.07156508812911447,
+        "threshold": 0.1,
+        "message": "tip_amount: 674 outliers (7.16%)"
+      },
+      {
+        "metric": "outliers_tolls_amount",
+        "passed": true,
+        "value": 0.07135272881715864,
+        "threshold": 0.1,
+        "message": "tolls_amount: 672 outliers (7.14%)"
+      },
+      {
+        "metric": "outliers_total_amount",
+        "passed": true,
+        "value": 0.11233807602463368,
+        "threshold": 0.1,
+        "message": "total_amount: 1,058 outliers (11.23%)"
+      },
+      {
+        "metric": "outliers_trip_duration",
+        "passed": true,
+        "value": 0.0573370142280739,
+        "threshold": 0.1,
+        "message": "trip_duration: 540 outliers (5.73%)"
+      },
+      {
+        "metric": "outliers_trip_duration_minutes",
+        "passed": true,
+        "value": 0.0573370142280739,
+        "threshold": 0.1,
+        "message": "trip_duration_minutes: 540 outliers (5.73%)"
+      },
+      {
+        "metric": "outliers_speed_mph",
+        "passed": true,
+        "value": 0.05308982798895732,
+        "threshold": 0.1,
+        "message": "speed_mph: 500 outliers (5.31%)"
+      }
+    ]
+  }
+}

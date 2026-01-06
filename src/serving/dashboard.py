@@ -81,8 +81,8 @@ def load_feature_sample(limit=1000):
         ORDER BY created_at DESC
         LIMIT {limit}
         """
-        with db_manager.get_connection() as conn:
-            df = pd.read_sql(query, conn)
+        conn = db_manager.engine
+        df = pd.read_sql(query, conn)
         return df
     except Exception as e:
         st.error(f"Error loading features: {e}")
@@ -105,11 +105,11 @@ if page == "📊 Overview":
 
     with col1:
         try:
-            with db_manager.get_connection() as conn:
-                result = conn.execute(
-                    "SELECT COUNT(*) FROM feature_store"
-                ).fetchone()
-                feature_count = result[0] if result else 0
+            conn = db_manager.engine
+            result = conn.execute(
+                "SELECT COUNT(*) FROM feature_store"
+            ).fetchone()
+            feature_count = result[0] if result else 0
             st.metric("Total Features", f"{feature_count:,}")
         except:
             st.metric("Total Features", "N/A")
@@ -450,8 +450,8 @@ elif page == "⚙️ System Status":
     st.subheader("💾 Database Status")
 
     try:
-        with db_manager.get_connection() as conn:
-            conn.execute("SELECT 1")
+        conn = db_manager.engine
+        conn.execute("SELECT 1")
         st.success("✅ Database connection healthy")
 
         # Table counts
@@ -466,9 +466,9 @@ elif page == "⚙️ System Status":
 
         for idx, (label, table) in enumerate(tables.items()):
             try:
-                with db_manager.get_connection() as conn:
-                    result = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()
-                    count = result[0] if result else 0
+                conn = db_manager.engine
+                result = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()
+                count = result[0] if result else 0
 
                 with [col1, col2, col3, col4][idx]:
                     st.metric(label, f"{count:,}")

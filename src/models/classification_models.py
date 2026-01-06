@@ -357,7 +357,8 @@ if __name__ == "__main__":
     LIMIT 10000
     """
 
-    with db_manager.get_connection() as conn:
+    # Using engine directly
+        conn = db_manager.engine
         df = pd.read_sql(query, conn)
 
     # Create binary classification target (e.g., high tip vs low tip)

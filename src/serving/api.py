@@ -109,8 +109,8 @@ async def health_check():
     """Health check endpoint."""
     # Check database
     try:
-        with db_manager.get_connection() as conn:
-            conn.execute("SELECT 1")
+        conn = db_manager.engine
+        conn.execute("SELECT 1")
         db_status = "healthy"
     except Exception as e:
         logger.error(f"Database health check failed: {e}")
@@ -240,26 +240,26 @@ async def predict_batch(requests: List[PredictionRequest]):
 async def database_stats():
     """Get database statistics."""
     try:
-        with db_manager.get_connection() as conn:
-            # Get table counts
-            tables = [
-                "raw_taxi_trips",
-                "processed_taxi_trips",
-                "feature_store",
-                "model_registry",
-            ]
+        conn = db_manager.engine
+        # Get table counts
+        tables = [
+            "raw_taxi_trips",
+            "processed_taxi_trips",
+            "feature_store",
+            "model_registry",
+        ]
 
-            stats = {}
-            for table in tables:
-                try:
-                    result = conn.execute(f"SELECT COUNT(*) as count FROM {table}")
-                    row = result.fetchone()
-                    stats[table] = row[0] if row else 0
-                except Exception as e:
-                    logger.warning(f"Error counting {table}: {e}")
-                    stats[table] = 0
+        stats = {}
+        for table in tables:
+            try:
+                result = conn.execute(f"SELECT COUNT(*) as count FROM {table}")
+                row = result.fetchone()
+                stats[table] = row[0] if row else 0
+            except Exception as e:
+                logger.warning(f"Error counting {table}: {e}")
+                stats[table] = 0
 
-            return stats
+        return stats
 
     except Exception as e:
         logger.error(f"Database stats error: {e}")
@@ -278,17 +278,17 @@ async def feature_stats():
         FROM feature_store
         """
 
-        with db_manager.get_connection() as conn:
-            result = conn.execute(query)
-            row = result.fetchone()
+        conn = db_manager.engine
+        result = conn.execute(query)
+        row = result.fetchone()
 
-            if row:
-                return {
-                    "total_features": row[0],
-                    "oldest_record": str(row[1]) if row[1] else None,
-                    "newest_record": str(row[2]) if row[2] else None,
-                }
-            return {"total_features": 0}
+        if row:
+            return {
+                "total_features": row[0],
+                "oldest_record": str(row[1]) if row[1] else None,
+                "newest_record": str(row[2]) if row[2] else None,
+            }
+        return {"total_features": 0}
 
     except Exception as e:
         logger.error(f"Feature stats error: {e}")

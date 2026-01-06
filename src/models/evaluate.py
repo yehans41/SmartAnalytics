@@ -398,7 +398,8 @@ if __name__ == "__main__":
     LIMIT 5000
     """
 
-    with db_manager.get_connection() as conn:
+    # Using engine directly
+        conn = db_manager.engine
         df = pd.read_sql(query, conn)
 
     # Prepare features

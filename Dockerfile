@@ -19,6 +19,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
+# Install package in editable mode
+RUN pip install -e .
+
 # Create necessary directories
 RUN mkdir -p data/raw data/processed data/features logs mlruns models
 
