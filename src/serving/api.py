@@ -10,6 +10,7 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import uvicorn
+from sqlalchemy import text
 
 from src.config import config
 from src.logger import get_logger
@@ -57,7 +58,7 @@ class PredictionRequest(BaseModel):
     features: Dict[str, float] = Field(..., description="Feature values")
     model_run_id: Optional[str] = Field(None, description="Specific model run ID")
     experiment_name: Optional[str] = Field(
-        "SmartAnalytics_Regression", description="Experiment to use"
+        "nyc_taxi_analysis", description="Experiment to use"
     )
 
 
@@ -109,8 +110,8 @@ async def health_check():
     """Health check endpoint."""
     # Check database
     try:
-        conn = db_manager.engine
-        conn.execute("SELECT 1")
+        with db_manager.engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
         db_status = "healthy"
     except Exception as e:
         logger.error(f"Database health check failed: {e}")
@@ -240,7 +241,6 @@ async def predict_batch(requests: List[PredictionRequest]):
 async def database_stats():
     """Get database statistics."""
     try:
-        conn = db_manager.engine
         # Get table counts
         tables = [
             "raw_taxi_trips",
@@ -250,14 +250,15 @@ async def database_stats():
         ]
 
         stats = {}
-        for table in tables:
-            try:
-                result = conn.execute(f"SELECT COUNT(*) as count FROM {table}")
-                row = result.fetchone()
-                stats[table] = row[0] if row else 0
-            except Exception as e:
-                logger.warning(f"Error counting {table}: {e}")
-                stats[table] = 0
+        with db_manager.engine.connect() as conn:
+            for table in tables:
+                try:
+                    result = conn.execute(text(f"SELECT COUNT(*) as count FROM {table}"))
+                    row = result.fetchone()
+                    stats[table] = row[0] if row else 0
+                except Exception as e:
+                    logger.warning(f"Error counting {table}: {e}")
+                    stats[table] = 0
 
         return stats
 
@@ -278,16 +279,16 @@ async def feature_stats():
         FROM feature_store
         """
 
-        conn = db_manager.engine
-        result = conn.execute(query)
-        row = result.fetchone()
+        with db_manager.engine.connect() as conn:
+            result = conn.execute(text(query))
+            row = result.fetchone()
 
-        if row:
-            return {
-                "total_features": row[0],
-                "oldest_record": str(row[1]) if row[1] else None,
-                "newest_record": str(row[2]) if row[2] else None,
-            }
+            if row:
+                return {
+                    "total_features": row[0],
+                    "oldest_record": str(row[1]) if row[1] else None,
+                    "newest_record": str(row[2]) if row[2] else None,
+                }
         return {"total_features": 0}
 
     except Exception as e:
@@ -338,7 +339,7 @@ async def predict_fare(
 
     # Create prediction request
     request = PredictionRequest(
-        features=features, experiment_name="SmartAnalytics_Regression"
+        features=features, experiment_name="nyc_taxi_analysis"
     )
 
     return await predict(request)

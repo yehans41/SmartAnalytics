@@ -51,12 +51,12 @@ services:
       - ./models:/app/models
       - ./data:/app/data
     environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_PORT=3306
+      - MYSQL_HOST=host.docker.internal
+      - MYSQL_PORT=3307
       - MYSQL_USER=smartanalytics
       - MYSQL_PASSWORD=smartpass123
       - MYSQL_DATABASE=smartanalytics_db
-      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - MLFLOW_TRACKING_URI=http://host.docker.internal:5002
     depends_on:
       mysql:
         condition: service_healthy
@@ -78,12 +78,12 @@ services:
       - ./models:/app/models
       - ./data:/app/data
     environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_PORT=3306
+      - MYSQL_HOST=host.docker.internal
+      - MYSQL_PORT=3307
       - MYSQL_USER=smartanalytics
       - MYSQL_PASSWORD=smartpass123
       - MYSQL_DATABASE=smartanalytics_db
-      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - MLFLOW_TRACKING_URI=http://host.docker.internal:5002
     depends_on:
       mysql:
         condition: service_healthy

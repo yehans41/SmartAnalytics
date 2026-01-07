@@ -10,6 +10,7 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime, timedelta
+from sqlalchemy import text
 
 from src.config import config
 from src.logger import get_logger
@@ -105,11 +106,11 @@ if page == "📊 Overview":
 
     with col1:
         try:
-            conn = db_manager.engine
-            result = conn.execute(
-                "SELECT COUNT(*) FROM feature_store"
-            ).fetchone()
-            feature_count = result[0] if result else 0
+            with db_manager.engine.connect() as conn:
+                result = conn.execute(
+                    text("SELECT COUNT(*) FROM feature_store")
+                ).fetchone()
+                feature_count = result[0] if result else 0
             st.metric("Total Features", f"{feature_count:,}")
         except:
             st.metric("Total Features", "N/A")
@@ -117,8 +118,7 @@ if page == "📊 Overview":
     with col2:
         try:
             experiments = [
-                "SmartAnalytics_Regression",
-                "SmartAnalytics_Classification",
+                "nyc_taxi_analysis",
             ]
             total_runs = 0
             for exp in experiments:
@@ -143,10 +143,10 @@ if page == "📊 Overview":
     # Recent activity
     st.subheader("📋 Recent Model Training Runs")
 
-    tab1, tab2, tab3 = st.tabs(["Regression", "Classification", "Clustering"])
+    tab1, tab2, tab3 = st.tabs(["All Models", "Classification", "Clustering"])
 
     with tab1:
-        runs = get_experiment_runs("SmartAnalytics_Regression", max_results=5)
+        runs = get_experiment_runs("nyc_taxi_analysis", max_results=5)
         if runs:
             df = pd.DataFrame(runs)
             df["start_time"] = pd.to_datetime(df["start_time"])
@@ -162,7 +162,7 @@ if page == "📊 Overview":
             st.info("No regression runs found")
 
     with tab2:
-        runs = get_experiment_runs("SmartAnalytics_Classification", max_results=5)
+        runs = get_experiment_runs("nyc_taxi_analysis", max_results=5)
         if runs:
             df = pd.DataFrame(runs)
             df["start_time"] = pd.to_datetime(df["start_time"])
@@ -266,7 +266,7 @@ elif page == "🤖 Model Predictions":
 
                     # Get best model
                     best = registry.get_best_model(
-                        "SmartAnalytics_Regression", metric="rmse"
+                        "nyc_taxi_analysis", metric="rmse"
                     )
 
                     if best:
@@ -311,9 +311,7 @@ elif page == "📈 Model Comparison":
     experiment_name = st.selectbox(
         "Select Experiment",
         [
-            "SmartAnalytics_Regression",
-            "SmartAnalytics_Classification",
-            "SmartAnalytics_Clustering",
+            "nyc_taxi_analysis",
         ],
     )
 
@@ -450,8 +448,8 @@ elif page == "⚙️ System Status":
     st.subheader("💾 Database Status")
 
     try:
-        conn = db_manager.engine
-        conn.execute("SELECT 1")
+        with db_manager.engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
         st.success("✅ Database connection healthy")
 
         # Table counts
@@ -466,9 +464,9 @@ elif page == "⚙️ System Status":
 
         for idx, (label, table) in enumerate(tables.items()):
             try:
-                conn = db_manager.engine
-                result = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()
-                count = result[0] if result else 0
+                with db_manager.engine.connect() as conn:
+                    result = conn.execute(text(f"SELECT COUNT(*) FROM {table}")).fetchone()
+                    count = result[0] if result else 0
 
                 with [col1, col2, col3, col4][idx]:
                     st.metric(label, f"{count:,}")
