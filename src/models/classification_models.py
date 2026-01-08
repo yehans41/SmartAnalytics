@@ -4,29 +4,30 @@ Classification Models for Smart Analytics Platform
 Implements multiple classification algorithms with MLflow tracking.
 """
 
-from typing import Dict, Any, Optional, Tuple
+from typing import Any, Dict, Optional, Tuple
+
+import matplotlib.pyplot as plt
+import mlflow
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.linear_model import LogisticRegression
+import xgboost as xgb
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.neural_network import MLPClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
     accuracy_score,
+    classification_report,
+    confusion_matrix,
+    f1_score,
     precision_score,
     recall_score,
-    f1_score,
     roc_auc_score,
-    confusion_matrix,
-    classification_report,
     roc_curve,
 )
-import xgboost as xgb
-import mlflow
+from sklearn.neural_network import MLPClassifier
 
-from src.models.base_trainer import BaseTrainer
 from src.logger import get_logger
+from src.models.base_trainer import BaseTrainer
 
 logger = get_logger(__name__)
 
@@ -336,8 +337,8 @@ class MLPClassifierTrainer(ClassificationTrainer):
 
 if __name__ == "__main__":
     # Example usage
-    from src.database import DatabaseManager
     from src.config import config
+    from src.database import DatabaseManager
 
     logger.info("Testing Classification Models...")
 

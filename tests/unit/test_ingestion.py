@@ -1,9 +1,10 @@
 """Tests for data ingestion module."""
 
-import pytest
-import pandas as pd
 from pathlib import Path
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import MagicMock, Mock, patch
+
+import pandas as pd
+import pytest
 
 from src.ingestion.download import NYCTaxiDownloader
 from src.ingestion.ingest_data import TaxiDataIngester

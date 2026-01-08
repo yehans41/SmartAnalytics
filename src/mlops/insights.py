@@ -4,12 +4,13 @@ Model Insights and Comparison Tool
 Generates automated insights and recommendations for model selection.
 """
 
-from typing import Dict, List, Optional, Any, Tuple
-from pathlib import Path
 from datetime import datetime
-import pandas as pd
-import numpy as np
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
 import mlflow
+import numpy as np
+import pandas as pd
 
 from src.logger import get_logger
 from src.serving.model_registry import ModelRegistry

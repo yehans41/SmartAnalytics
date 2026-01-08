@@ -4,12 +4,13 @@ Model Card Generator for Smart Analytics Platform
 Automatically generates comprehensive model cards with LLM assistance.
 """
 
-from typing import Dict, List, Optional, Any
-from pathlib import Path
-from datetime import datetime
 import json
-import pandas as pd
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
 import mlflow
+import pandas as pd
 
 from src.config import config
 from src.logger import get_logger

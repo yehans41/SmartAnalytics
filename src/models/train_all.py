@@ -5,38 +5,33 @@ Runs all model families and generates comprehensive comparison reports.
 """
 
 import argparse
-from pathlib import Path
-from typing import Dict, List, Any, Optional
-import pandas as pd
-import numpy as np
-import mlflow
 from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import mlflow
+import numpy as np
+import pandas as pd
 
 from src.config import config
 from src.database import DatabaseManager
 from src.logger import get_logger
+from src.models.classification_models import (
+    LogisticRegressionTrainer,
+    MLPClassifierTrainer,
+    RandomForestClassifierTrainer,
+    XGBoostClassifierTrainer,
+)
+from src.models.clustering_models import GaussianMixtureTrainer, KMeansTrainer
+from src.models.dim_reduction import LDATrainer, PCATrainer
 
 # Import all model trainers
 from src.models.regression_models import (
-    LinearRegressionTrainer,
-    RidgeRegressionTrainer,
     LassoRegressionTrainer,
+    LinearRegressionTrainer,
     RandomForestRegressorTrainer,
+    RidgeRegressionTrainer,
     XGBoostRegressorTrainer,
-)
-from src.models.classification_models import (
-    LogisticRegressionTrainer,
-    RandomForestClassifierTrainer,
-    XGBoostClassifierTrainer,
-    MLPClassifierTrainer,
-)
-from src.models.clustering_models import (
-    KMeansTrainer,
-    GaussianMixtureTrainer,
-)
-from src.models.dim_reduction import (
-    PCATrainer,
-    LDATrainer,
 )
 
 logger = get_logger(__name__)

@@ -4,18 +4,19 @@ Streamlit Dashboard for Smart Analytics Platform
 Interactive web dashboard for model visualization and predictions.
 """
 
-import streamlit as st
-import pandas as pd
+from datetime import datetime, timedelta
+
 import numpy as np
+import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from datetime import datetime, timedelta
+import streamlit as st
 from sqlalchemy import text
 
 from src.config import config
+from src.database import DatabaseManager
 from src.logger import get_logger
 from src.serving.model_registry import ModelRegistry
-from src.database import DatabaseManager
 
 logger = get_logger(__name__)
 

@@ -4,24 +4,24 @@ Model Evaluation Utilities for Smart Analytics Platform
 Provides comprehensive evaluation, comparison, and visualization tools.
 """
 
-from typing import Dict, List, Any, Optional, Union
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
+
+import matplotlib.pyplot as plt
+import mlflow
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import seaborn as sns
-from pathlib import Path
-import mlflow
-from datetime import datetime
-
 from sklearn.metrics import (
+    accuracy_score,
+    auc,
+    confusion_matrix,
     mean_absolute_error,
     mean_squared_error,
-    r2_score,
-    accuracy_score,
     precision_recall_fscore_support,
-    confusion_matrix,
+    r2_score,
     roc_curve,
-    auc,
 )
 
 from src.config import config
@@ -376,10 +376,11 @@ class ModelEvaluator:
 
 if __name__ == "__main__":
     # Example usage
-    from src.database import DatabaseManager
-    from sklearn.model_selection import train_test_split
-    from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+    from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
     from sklearn.linear_model import LinearRegression, LogisticRegression
+    from sklearn.model_selection import train_test_split
+
+    from src.database import DatabaseManager
 
     logger.info("Testing ModelEvaluator...")
 

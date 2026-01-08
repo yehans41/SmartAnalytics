@@ -1,12 +1,13 @@
 """Tests for data processing modules."""
 
-import pytest
-import pandas as pd
-import numpy as np
 from unittest.mock import Mock, patch
 
-from src.processing.validate_data import DataValidator, ValidationResult
+import numpy as np
+import pandas as pd
+import pytest
+
 from src.processing.clean_data import TaxiDataCleaner
+from src.processing.validate_data import DataValidator, ValidationResult
 
 
 class TestDataValidator:

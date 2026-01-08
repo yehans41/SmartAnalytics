@@ -23,6 +23,7 @@ def set_random_seed(seed: int = 42) -> None:
     np.random.seed(seed)
     try:
         import random
+
         import torch
 
         random.seed(seed)

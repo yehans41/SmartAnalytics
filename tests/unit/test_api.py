@@ -2,10 +2,11 @@
 Unit tests for FastAPI endpoints
 """
 
+from unittest.mock import MagicMock, Mock, patch
+
+import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import Mock, patch, MagicMock
-import pandas as pd
 
 from src.serving.api import app
 from src.serving.model_registry import ModelRegistry

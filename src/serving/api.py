@@ -4,18 +4,19 @@ FastAPI Application for Smart Analytics Platform
 Provides REST API endpoints for model predictions and system information.
 """
 
-from typing import Dict, List, Optional, Any
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+import uvicorn
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-import uvicorn
 from sqlalchemy import text
 
 from src.config import config
+from src.database import DatabaseManager
 from src.logger import get_logger
 from src.serving.model_registry import ModelRegistry
-from src.database import DatabaseManager
 
 logger = get_logger(__name__)
 

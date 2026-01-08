@@ -2,23 +2,24 @@
 Unit tests for ML models
 """
 
-import pytest
+from pathlib import Path
+from unittest.mock import MagicMock, Mock, patch
+
 import numpy as np
 import pandas as pd
-from unittest.mock import Mock, patch, MagicMock
-from pathlib import Path
+import pytest
 
-from src.models.regression_models import (
-    LinearRegressionTrainer,
-    RidgeRegressionTrainer,
-    RandomForestRegressorTrainer,
-)
 from src.models.classification_models import (
     LogisticRegressionTrainer,
     RandomForestClassifierTrainer,
 )
-from src.models.clustering_models import KMeansTrainer, GaussianMixtureTrainer
-from src.models.dim_reduction import PCATrainer, LDATrainer
+from src.models.clustering_models import GaussianMixtureTrainer, KMeansTrainer
+from src.models.dim_reduction import LDATrainer, PCATrainer
+from src.models.regression_models import (
+    LinearRegressionTrainer,
+    RandomForestRegressorTrainer,
+    RidgeRegressionTrainer,
+)
 
 
 @pytest.fixture

@@ -1,8 +1,9 @@
 """Geospatial feature engineering for location-based analysis."""
 
+from typing import Tuple
+
 import numpy as np
 import pandas as pd
-from typing import Tuple
 
 from src.logger import get_logger
 
