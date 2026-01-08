@@ -170,7 +170,7 @@ This model was trained as part of the Smart Analytics platform for NYC taxi trip
                 if not key.startswith("mlflow."):
                     card += f"- `{key}`: {value}\n"
 
-        card += f"\n### MLflow Information\n\n"
+        card += "\n### MLflow Information\n\n"
         card += f"- **Tracking URI**: {config.mlflow.tracking_uri}\n"
         card += f"- **Artifact Location**: `runs:/{run_id}/model`\n"
 
@@ -254,7 +254,9 @@ Discovers natural groupings in taxi trip patterns to identify:
                 )
 
             if r2 > 0:
-                interpretation += f"- **R² ({r2:.4f})**: Model explains {r2*100:.2f}% of variance in fare amounts\n"
+                pct = r2 * 100
+                interpretation += f"- **R² ({r2:.4f})**: Model explains "
+                interpretation += f"{pct:.2f}% of variance in fare amounts\n"
 
                 if r2 > 0.9:
                     interpretation += "  - ✅ **Excellent** performance\n"
@@ -271,7 +273,9 @@ Discovers natural groupings in taxi trip patterns to identify:
             roc_auc = metrics.get("roc_auc", 0)
 
             if accuracy > 0:
-                interpretation += f"- **Accuracy ({accuracy:.4f})**: Correctly classifies {accuracy*100:.2f}% of trips\n"
+                pct = accuracy * 100
+                interpretation += f"- **Accuracy ({accuracy:.4f})**: "
+                interpretation += f"Correctly classifies {pct:.2f}% of trips\n"
 
             if f1 > 0:
                 interpretation += (
@@ -300,32 +304,32 @@ Discovers natural groupings in taxi trip patterns to identify:
         if "n_estimators" in params:
             n_est = int(params["n_estimators"])
             if n_est > 200:
-                insights.append(
-                    f"- **High Complexity**: Uses {n_est} trees, which provides strong predictive power but increases training time"
-                )
+                msg = f"- **High Complexity**: Uses {n_est} trees, which provides "
+                msg += "strong predictive power but increases training time"
+                insights.append(msg)
             elif n_est < 50:
-                insights.append(
-                    f"- **Low Complexity**: Uses only {n_est} trees, training is fast but may underfit"
-                )
+                msg = f"- **Low Complexity**: Uses only {n_est} trees, training is "
+                msg += "fast but may underfit"
+                insights.append(msg)
 
         if "max_depth" in params:
             depth = int(params["max_depth"])
             if depth > 15:
-                insights.append(
-                    f"- **Deep Trees**: Max depth of {depth} allows capturing complex patterns but risks overfitting"
-                )
+                msg = f"- **Deep Trees**: Max depth of {depth} allows capturing "
+                msg += "complex patterns but risks overfitting"
+                insights.append(msg)
             elif depth < 5:
-                insights.append(
-                    f"- **Shallow Trees**: Max depth of {depth} prevents overfitting but may miss complex relationships"
-                )
+                msg = f"- **Shallow Trees**: Max depth of {depth} prevents "
+                msg += "overfitting but may miss complex relationships"
+                insights.append(msg)
 
         # Performance insights
         if "r2" in metrics:
             r2 = metrics["r2"]
             if r2 > 0.85:
-                insights.append(
-                    "- **Strong Predictive Power**: High R² indicates model captures most variance in target variable"
-                )
+                msg = "- **Strong Predictive Power**: High R² indicates model "
+                msg += "captures most variance in target variable"
+                insights.append(msg)
 
         if "f1_score" in metrics:
             metrics["f1_score"]
@@ -333,9 +337,9 @@ Discovers natural groupings in taxi trip patterns to identify:
             recall = metrics.get("recall", 0)
 
             if abs(precision - recall) > 0.1:
-                insights.append(
-                    "- **Precision-Recall Tradeoff**: Consider adjusting classification threshold based on business requirements"
-                )
+                msg = "- **Precision-Recall Tradeoff**: Consider adjusting "
+                msg += "classification threshold based on business requirements"
+                insights.append(msg)
 
         if not insights:
             insights.append(
@@ -353,30 +357,30 @@ Discovers natural groupings in taxi trip patterns to identify:
             r2 = metrics.get("r2", 0)
 
             if r2 < 0.8:
-                recommendations.append(
-                    "- **Feature Engineering**: Consider adding more derived features or interaction terms"
-                )
-                recommendations.append(
-                    "- **Hyperparameter Tuning**: Use grid search or Bayesian optimization to find better parameters"
-                )
+                msg = "- **Feature Engineering**: Consider adding more derived "
+                msg += "features or interaction terms"
+                recommendations.append(msg)
+                msg = "- **Hyperparameter Tuning**: Use grid search or "
+                msg += "Bayesian optimization to find better parameters"
+                recommendations.append(msg)
 
             rmse = metrics.get("rmse", 0)
             if rmse > 5:
-                recommendations.append(
-                    "- **Outlier Handling**: High RMSE suggests presence of outliers - consider robust scaling or outlier removal"
-                )
+                msg = "- **Outlier Handling**: High RMSE suggests presence of "
+                msg += "outliers - consider robust scaling or outlier removal"
+                recommendations.append(msg)
 
         # Classification recommendations
         if "Classification" in experiment_name:
             accuracy = metrics.get("accuracy", 0)
 
             if accuracy < 0.75:
-                recommendations.append(
-                    "- **Data Quality**: Check for class imbalance and consider resampling techniques (SMOTE, undersampling)"
-                )
-                recommendations.append(
-                    "- **Feature Selection**: Use feature importance to remove noise and improve signal"
-                )
+                msg = "- **Data Quality**: Check for class imbalance and consider "
+                msg += "resampling techniques (SMOTE, undersampling)"
+                recommendations.append(msg)
+                msg = "- **Feature Selection**: Use feature importance to remove "
+                msg += "noise and improve signal"
+                recommendations.append(msg)
 
         # General recommendations
         recommendations.append(

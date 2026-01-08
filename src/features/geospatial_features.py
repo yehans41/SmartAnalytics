@@ -283,7 +283,7 @@ class GeospatialFeatureEngineer:
                 ["pickup_at_airport", "dropoff_at_airport", "is_airport_trip"]
             )
 
-        logger.info(f"✓ Created location-based features")
+        logger.info("✓ Created location-based features")
         return df
 
     def create_zone_features(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -331,7 +331,7 @@ class GeospatialFeatureEngineer:
         else:
             self.feature_names.append("pickup_zone")
 
-        logger.info(f"✓ Created zone features")
+        logger.info("✓ Created zone features")
         return df
 
     def engineer_all_geospatial_features(

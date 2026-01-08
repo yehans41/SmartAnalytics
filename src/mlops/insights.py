@@ -126,14 +126,14 @@ class ModelInsightsGenerator:
 
         # Get best model
         best_model = df.iloc[0]
-        report += f"### 🏆 Best Model\n\n"
+        report += "### 🏆 Best Model\n\n"
         report += f"- **Name**: {best_model['run_name']}\n"
         report += f"- **Run ID**: `{best_model['run_id']}`\n"
 
         # Add best metrics
         metric_cols = [col for col in df.columns if col.startswith("metric_")]
         if metric_cols:
-            report += f"\n**Performance:**\n"
+            report += "\n**Performance:**\n"
             for col in metric_cols:
                 metric_name = col.replace("metric_", "")
                 value = best_model[col]
@@ -206,9 +206,9 @@ class ModelInsightsGenerator:
                         f"- **Consistency**: ⚠️ Moderate variation (spread: {spread:.1f}%)"
                     )
                 else:
-                    analysis.append(
-                        f"- **Consistency**: ❌ High variation (spread: {spread:.1f}%) - hyperparameter tuning recommended"
-                    )
+                    msg = f"- **Consistency**: ❌ High variation (spread: {spread:.1f}%) "
+                    msg += "- hyperparameter tuning recommended"
+                    analysis.append(msg)
 
                 analysis.append("")
 
@@ -245,7 +245,7 @@ class ModelInsightsGenerator:
                         analysis.append(
                             f"\n**Range**: {numeric_vals.min()} to {numeric_vals.max()}"
                         )
-                    except:
+                    except Exception:
                         pass
 
                     analysis.append("")
@@ -271,27 +271,27 @@ class ModelInsightsGenerator:
                 cv = values.std() / values.mean()  # Coefficient of variation
 
                 if cv > 0.2:
-                    recommendations.append(
-                        "- **High Performance Variation**: Consider ensemble methods to combine strengths of different models"
-                    )
+                    msg = "- **High Performance Variation**: Consider ensemble methods "
+                    msg += "to combine strengths of different models"
+                    recommendations.append(msg)
 
         # Check model complexity
         param_cols = [col for col in df.columns if "n_estimators" in col.lower()]
         if param_cols:
-            recommendations.append(
-                "- **Tree-based Models**: Consider trying gradient boosting libraries (LightGBM, CatBoost) for potential improvements"
-            )
+            msg = "- **Tree-based Models**: Consider trying gradient boosting "
+            msg += "libraries (LightGBM, CatBoost) for potential improvements"
+            recommendations.append(msg)
 
         # General recommendations
-        recommendations.append(
-            "- **Hyperparameter Optimization**: Use automated tools like Optuna or Ray Tune for systematic search"
-        )
-        recommendations.append(
-            "- **Feature Engineering**: Experiment with polynomial features, interactions, or domain-specific transformations"
-        )
-        recommendations.append(
-            "- **Cross-Validation**: Implement stratified k-fold CV for robust performance estimates"
-        )
+        msg = "- **Hyperparameter Optimization**: Use automated tools like Optuna "
+        msg += "or Ray Tune for systematic search"
+        recommendations.append(msg)
+        msg = "- **Feature Engineering**: Experiment with polynomial features, "
+        msg += "interactions, or domain-specific transformations"
+        recommendations.append(msg)
+        msg = "- **Cross-Validation**: Implement stratified k-fold CV "
+        msg += "for robust performance estimates"
+        recommendations.append(msg)
         recommendations.append(
             "- **Model Monitoring**: Deploy best model with drift detection and periodic retraining"
         )
@@ -330,8 +330,10 @@ class ModelInsightsGenerator:
 
 | Role | Name | Run ID |
 |------|------|--------|
-| **Champion** (Production) | {champion.data.tags.get('mlflow.runName', 'Unknown')} | `{champion_run_id}` |
-| **Challenger** (Candidate) | {challenger.data.tags.get('mlflow.runName', 'Unknown')} | `{challenger_run_id}` |
+| **Champion** (Production) | \
+{champion.data.tags.get('mlflow.runName', 'Unknown')} | `{champion_run_id}` |
+| **Challenger** (Candidate) | \
+{challenger.data.tags.get('mlflow.runName', 'Unknown')} | `{challenger_run_id}` |
 
 ---
 
@@ -363,7 +365,8 @@ class ModelInsightsGenerator:
                 else:
                     winner = "🏆 Challenger" if chall_val > champ_val else "Champion"
 
-                report += f"| {metric} | {champ_val:.6f} | {chall_val:.6f} | {diff:+.6f} ({diff_pct:+.2f}%) | {winner} |\n"
+                report += f"| {metric} | {champ_val:.6f} | {chall_val:.6f} | "
+                report += f"{diff:+.6f} ({diff_pct:+.2f}%) | {winner} |\n"
 
         report += "\n---\n\n## Hyperparameters Comparison\n\n"
 
@@ -448,7 +451,7 @@ class ModelInsightsGenerator:
 4. Retrain and compare again
 """
         else:
-            decision = f"""### ⚖️ Tie - Further Analysis Needed
+            decision = """### ⚖️ Tie - Further Analysis Needed
 
 **Reasoning:**
 - Both models win on equal number of metrics

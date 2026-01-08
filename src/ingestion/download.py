@@ -216,9 +216,9 @@ if __name__ == "__main__":
     sample_file = downloader.download_sample(year=2023, month=1)
 
     if sample_file:
-        print(f"\n✓ Sample data downloaded successfully!")
+        print("\n✓ Sample data downloaded successfully!")
         print(f"Location: {sample_file}")
-        print(f"\nTo download more months, use:")
+        print("\nTo download more months, use:")
         print("  python -m src.ingestion.download")
     else:
         print("\n✗ Download failed. Please check your internet connection.")
