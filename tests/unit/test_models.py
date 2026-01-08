@@ -158,8 +158,8 @@ class TestClassificationModels:
     def test_random_forest_classifier_init(self):
         """Test RandomForestClassifierTrainer initialization."""
         trainer = RandomForestClassifierTrainer(n_estimators=50, max_depth=10)
-        assert trainer.model_name == "random_forest_classifier"
-        assert trainer.params["n_estimators"] == 50
+        assert trainer.model_name == "RandomForestClassifier"
+        assert trainer.n_estimators == 50
 
 
 class TestClusteringModels:
