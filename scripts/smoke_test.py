@@ -22,7 +22,6 @@ def test_imports():
         "pandas",
         "numpy",
         "sklearn",
-        "torch",
         "xgboost",
         "mlflow",
         "fastapi",
@@ -31,15 +30,27 @@ def test_imports():
         "dotenv",
     ]
 
+    optional_packages = [
+        "torch",  # Optional - used for neural networks if available
+    ]
+
+    all_passed = True
     for package in required_packages:
         try:
             __import__(package)
             logger.info(f"✓ {package}")
         except ImportError as e:
             logger.error(f"✗ {package}: {e}")
-            return False
+            all_passed = False
 
-    return True
+    for package in optional_packages:
+        try:
+            __import__(package)
+            logger.info(f"✓ {package} (optional)")
+        except ImportError:
+            logger.info(f"⊙ {package} (optional - not installed)")
+
+    return all_passed
 
 
 def test_config():
