@@ -308,7 +308,10 @@ class ModelTrainingOrchestrator:
         for result in self.results["regression"]:
             metrics = result.get("test_metrics", {})
             model_name = result.get("model_name", "Unknown")
-            report += f"| {model_name} | {metrics.get('mae', 'N/A'):.4f} | {metrics.get('rmse', 'N/A'):.4f} | {metrics.get('r2', 'N/A'):.4f} | - |\n"
+            mae = metrics.get("mae", "N/A")
+            rmse = metrics.get("rmse", "N/A")
+            r2 = metrics.get("r2", "N/A")
+            report += f"| {model_name} | {mae:.4f} | {rmse:.4f} | {r2:.4f} | - |\n"
 
         report += "\n## Classification Models\n\n"
         report += "| Model | Accuracy | Precision | Recall | F1 Score | ROC AUC |\n"
@@ -317,7 +320,13 @@ class ModelTrainingOrchestrator:
         for result in self.results["classification"]:
             metrics = result.get("test_metrics", {})
             model_name = result.get("model_name", "Unknown")
-            report += f"| {model_name} | {metrics.get('accuracy', 'N/A'):.4f} | {metrics.get('precision', 'N/A'):.4f} | {metrics.get('recall', 'N/A'):.4f} | {metrics.get('f1_score', 'N/A'):.4f} | {metrics.get('roc_auc', 'N/A'):.4f} |\n"
+            acc = metrics.get("accuracy", "N/A")
+            prec = metrics.get("precision", "N/A")
+            rec = metrics.get("recall", "N/A")
+            f1 = metrics.get("f1_score", "N/A")
+            auc = metrics.get("roc_auc", "N/A")
+            report += f"| {model_name} | {acc:.4f} | {prec:.4f} | "
+            report += f"{rec:.4f} | {f1:.4f} | {auc:.4f} |\n"
 
         report += "\n## Clustering Models\n\n"
         report += "| Model | Silhouette Score | Davies-Bouldin | Calinski-Harabasz |\n"
@@ -326,7 +335,10 @@ class ModelTrainingOrchestrator:
         for result in self.results["clustering"]:
             metrics = result.get("metrics", {})
             model_name = result.get("model_name", "Unknown")
-            report += f"| {model_name} | {metrics.get('silhouette_score', 'N/A'):.4f} | {metrics.get('davies_bouldin_score', 'N/A'):.4f} | {metrics.get('calinski_harabasz_score', 'N/A'):.4f} |\n"
+            sil = metrics.get("silhouette_score", "N/A")
+            db = metrics.get("davies_bouldin_score", "N/A")
+            ch = metrics.get("calinski_harabasz_score", "N/A")
+            report += f"| {model_name} | {sil:.4f} | {db:.4f} | {ch:.4f} |\n"
 
         report += "\n## Dimensionality Reduction\n\n"
         report += "| Model | Components | Total Variance Explained |\n"
@@ -335,7 +347,9 @@ class ModelTrainingOrchestrator:
         for result in self.results["dimensionality_reduction"]:
             metrics = result.get("metrics", {})
             model_name = result.get("model_name", "Unknown")
-            report += f"| {model_name} | {metrics.get('n_components', 'N/A')} | {metrics.get('total_variance_explained', 'N/A'):.4f} |\n"
+            n_comp = metrics.get("n_components", "N/A")
+            var_exp = metrics.get("total_variance_explained", "N/A")
+            report += f"| {model_name} | {n_comp} | {var_exp:.4f} |\n"
 
         report += f"\n---\n*MLflow Tracking URI: {config.mlflow.tracking_uri}*\n"
 

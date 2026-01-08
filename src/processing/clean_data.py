@@ -193,9 +193,10 @@ class TaxiDataCleaner:
             capped_counts[col] = capped
 
             if capped > 0:
-                logger.info(
-                    f"{col}: Capped {capped:,} values to [{max(0, lower_bound):.2f}, {upper_bound:.2f}]"
-                )
+                lower = max(0, lower_bound)
+                msg = f"{col}: Capped {capped:,} values to "
+                msg += f"[{lower:.2f}, {upper_bound:.2f}]"
+                logger.info(msg)
 
         self.cleaning_stats["outliers_capped"] = capped_counts
 
