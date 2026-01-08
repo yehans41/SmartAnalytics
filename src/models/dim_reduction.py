@@ -4,13 +4,11 @@ Dimensionality Reduction Models for Smart Analytics Platform
 Implements PCA and LDA for feature reduction and visualization.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 
 import matplotlib.pyplot as plt
-import mlflow
 import numpy as np
 import pandas as pd
-import seaborn as sns
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.preprocessing import StandardScaler
@@ -312,7 +310,6 @@ class LDATrainer(DimensionalityReductionTrainer):
 
 if __name__ == "__main__":
     # Example usage
-    from src.config import config
     from src.database import DatabaseManager
 
     logger.info("Testing Dimensionality Reduction Models...")
@@ -355,7 +352,7 @@ if __name__ == "__main__":
 
     # Get top features
     top_features = pca_trainer.get_top_features_per_component(feature_cols, top_n=5)
-    logger.info(f"\nTop Features per Component:")
+    logger.info("\nTop Features per Component:")
     for comp, features in list(top_features.items())[:3]:
         logger.info(f"  {comp}: {features}")
 

@@ -2,7 +2,6 @@
 Unit tests for ML models
 """
 
-from pathlib import Path
 from unittest.mock import MagicMock, Mock, patch
 
 import numpy as np
@@ -113,14 +112,14 @@ class TestRegressionModels:
         """Test RidgeRegressionTrainer initialization."""
         trainer = RidgeRegressionTrainer(alpha=1.0)
         assert trainer.model_name == "ridge_regression"
-        assert trainer.alpha == 1.0
+        assert trainer.params["alpha"] == 1.0
 
     def test_random_forest_regressor_init(self):
         """Test RandomForestRegressorTrainer initialization."""
         trainer = RandomForestRegressorTrainer(n_estimators=50, max_depth=10)
         assert trainer.model_name == "random_forest_regressor"
-        assert trainer.n_estimators == 50
-        assert trainer.max_depth == 10
+        assert trainer.params["n_estimators"] == 50
+        assert trainer.params["max_depth"] == 10
 
 
 class TestClassificationModels:
@@ -160,7 +159,7 @@ class TestClassificationModels:
         """Test RandomForestClassifierTrainer initialization."""
         trainer = RandomForestClassifierTrainer(n_estimators=50, max_depth=10)
         assert trainer.model_name == "RandomForestClassifier"
-        assert trainer.n_estimators == 50
+        assert trainer.params["n_estimators"] == 50
 
 
 class TestClusteringModels:

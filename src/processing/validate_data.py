@@ -6,7 +6,6 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 import pandas as pd
 
-from src.config import config
 from src.logger import get_logger
 
 logger = get_logger(__name__)
@@ -288,10 +287,10 @@ class DataValidator:
             return False
 
         # Informational checks
-        null_pcts = self.check_null_values(df)
+        self.check_null_values(df)
         dup_count, dup_pct = self.check_duplicates(df)
-        outlier_counts = self.check_outliers(df)
-        range_issues = self.check_value_ranges(df)
+        self.check_outliers(df)
+        self.check_value_ranges(df)
 
         # Determine overall pass/fail
         critical_failures = [

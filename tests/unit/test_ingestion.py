@@ -1,7 +1,7 @@
 """Tests for data ingestion module."""
 
 from pathlib import Path
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import patch
 
 import pandas as pd
 import pytest

@@ -4,12 +4,11 @@ Streamlit Dashboard for Smart Analytics Platform
 Interactive web dashboard for model visualization and predictions.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 import streamlit as st
 from sqlalchemy import text
 
@@ -112,7 +111,7 @@ if page == "📊 Overview":
                 result = conn.execute(text("SELECT COUNT(*) FROM feature_store")).fetchone()
                 feature_count = result[0] if result else 0
             st.metric("Total Features", f"{feature_count:,}")
-        except:
+        except Exception:
             st.metric("Total Features", "N/A")
 
     with col2:
@@ -125,14 +124,14 @@ if page == "📊 Overview":
                 runs = registry.get_latest_runs(exp, max_results=100)
                 total_runs += len(runs)
             st.metric("Total Model Runs", total_runs)
-        except:
+        except Exception:
             st.metric("Total Model Runs", "N/A")
 
     with col3:
         try:
             models = registry.list_registered_models()
             st.metric("Registered Models", len(models))
-        except:
+        except Exception:
             st.metric("Registered Models", "0")
 
     with col4:
@@ -459,7 +458,7 @@ elif page == "⚙️ System Status":
 
                 with [col1, col2, col3, col4][idx]:
                     st.metric(label, f"{count:,}")
-            except Exception as e:
+            except Exception:
                 with [col1, col2, col3, col4][idx]:
                     st.metric(label, "Error")
 

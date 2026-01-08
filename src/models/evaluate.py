@@ -6,7 +6,7 @@ Provides comprehensive evaluation, comparison, and visualization tools.
 
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 import matplotlib.pyplot as plt
 import mlflow
@@ -148,7 +148,7 @@ class ModelEvaluator:
         y_test: pd.Series,
     ) -> plt.Figure:
         """Create comparison plots for classification models."""
-        n_models = len(models)
+        len(models)
         fig, axes = plt.subplots(1, 2, figsize=(15, 5))
 
         # ROC Curves

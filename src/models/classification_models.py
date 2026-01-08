@@ -4,10 +4,9 @@ Classification Models for Smart Analytics Platform
 Implements multiple classification algorithms with MLflow tracking.
 """
 
-from typing import Any, Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple
 
 import matplotlib.pyplot as plt
-import mlflow
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -337,7 +336,6 @@ class MLPClassifierTrainer(ClassificationTrainer):
 
 if __name__ == "__main__":
     # Example usage
-    from src.config import config
     from src.database import DatabaseManager
 
     logger.info("Testing Classification Models...")

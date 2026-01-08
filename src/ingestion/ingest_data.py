@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 import pandas as pd
-from sqlalchemy import text
 
 from src.config import config
 from src.database import db
@@ -247,7 +246,7 @@ class TaxiDataIngester:
             logger.info(f"✓ Table {self.table_name} contains {row_count:,} rows")
 
             # Get sample data
-            sample_query = f"SELECT * FROM {self.table_name} LIMIT 5"
+            f"SELECT * FROM {self.table_name} LIMIT 5"
             sample = db.read_table(self.table_name, limit=5)
             logger.info(f"✓ Sample data retrieved: {len(sample)} rows")
 

@@ -4,10 +4,9 @@ Model Card Generator for Smart Analytics Platform
 Automatically generates comprehensive model cards with LLM assistance.
 """
 
-import json
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 
 import mlflow
 import pandas as pd
@@ -329,7 +328,7 @@ Discovers natural groupings in taxi trip patterns to identify:
                 )
 
         if "f1_score" in metrics:
-            f1 = metrics["f1_score"]
+            metrics["f1_score"]
             precision = metrics.get("precision", 0)
             recall = metrics.get("recall", 0)
 

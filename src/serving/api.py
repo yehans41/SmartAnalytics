@@ -13,7 +13,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from sqlalchemy import text
 
-from src.config import config
 from src.database import DatabaseManager
 from src.logger import get_logger
 from src.serving.model_registry import ModelRegistry

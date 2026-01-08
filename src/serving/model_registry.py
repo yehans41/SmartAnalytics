@@ -4,12 +4,10 @@ Model Registry and Loading Utilities
 Handles loading models from MLflow and serving them for predictions.
 """
 
-from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import mlflow
 import mlflow.sklearn
-import numpy as np
 import pandas as pd
 from mlflow.tracking import MlflowClient
 

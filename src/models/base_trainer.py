@@ -106,7 +106,6 @@ class BaseTrainer(ABC):
         Returns:
             Model instance
         """
-        pass
 
     @abstractmethod
     def train(
@@ -124,7 +123,6 @@ class BaseTrainer(ABC):
             X_val: Validation features
             y_val: Validation target
         """
-        pass
 
     @abstractmethod
     def evaluate(self, X_test: np.ndarray, y_test: np.ndarray) -> Dict[str, float]:
@@ -137,7 +135,6 @@ class BaseTrainer(ABC):
         Returns:
             Dictionary of metrics
         """
-        pass
 
     def log_to_mlflow(
         self,

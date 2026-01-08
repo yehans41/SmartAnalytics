@@ -4,13 +4,11 @@ Clustering Models for Smart Analytics Platform
 Implements unsupervised clustering algorithms with MLflow tracking.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Dict, Optional
 
 import matplotlib.pyplot as plt
-import mlflow
 import numpy as np
 import pandas as pd
-import seaborn as sns
 from sklearn.cluster import KMeans
 from sklearn.metrics import calinski_harabasz_score, davies_bouldin_score, silhouette_score
 from sklearn.mixture import GaussianMixture
@@ -318,7 +316,6 @@ class GaussianMixtureTrainer(ClusteringTrainer):
 
 if __name__ == "__main__":
     # Example usage
-    from src.config import config
     from src.database import DatabaseManager
 
     logger.info("Testing Clustering Models...")

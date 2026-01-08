@@ -1,6 +1,5 @@
 """Data download utilities for NYC Taxi dataset."""
 
-import os
 from pathlib import Path
 from typing import List, Optional
 from urllib.parse import urljoin

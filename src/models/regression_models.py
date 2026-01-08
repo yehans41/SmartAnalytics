@@ -1,11 +1,10 @@
 """Regression model implementations."""
 
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Dict, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import Lasso, LinearRegression, Ridge
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score

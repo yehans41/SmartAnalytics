@@ -323,7 +323,7 @@ def run_feature_engineering(
     )
 
     # Create feature dictionary
-    feature_dict = engineer.create_feature_dictionary(df_features)
+    engineer.create_feature_dictionary(df_features)
     dict_path = engineer.save_feature_dictionary()
 
     # Save to database
