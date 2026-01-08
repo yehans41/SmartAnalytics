@@ -46,9 +46,7 @@ class TestTaxiDataIngester:
             {
                 "VendorID": [1, 2, 1],
                 "tpep_pickup_datetime": pd.date_range("2023-01-01", periods=3),
-                "tpep_dropoff_datetime": pd.date_range(
-                    "2023-01-01 00:30:00", periods=3
-                ),
+                "tpep_dropoff_datetime": pd.date_range("2023-01-01 00:30:00", periods=3),
                 "passenger_count": [1.0, 2.0, 1.0],
                 "trip_distance": [1.5, 2.3, 0.8],
                 "RatecodeID": [1.0, 1.0, 1.0],

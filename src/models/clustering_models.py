@@ -45,17 +45,13 @@ class ClusteringTrainer(BaseTrainer):
         metrics = {
             "silhouette_score": silhouette_score(X_scaled, labels),
             "davies_bouldin_score": davies_bouldin_score(X_scaled, labels),
-            "calinski_harabasz_score": calinski_harabasz_score(
-                X_scaled, labels
-            ),
+            "calinski_harabasz_score": calinski_harabasz_score(X_scaled, labels),
         }
 
         logger.info(f"{self.model_name} Clustering Metrics: {metrics}")
         return metrics
 
-    def plot_elbow_curve(
-        self, X: pd.DataFrame, max_clusters: int = 10
-    ) -> plt.Figure:
+    def plot_elbow_curve(self, X: pd.DataFrame, max_clusters: int = 10) -> plt.Figure:
         """Plot elbow curve to determine optimal number of clusters."""
         X_scaled = self.scaler.fit_transform(X)
         inertias = []
@@ -79,9 +75,7 @@ class ClusteringTrainer(BaseTrainer):
 
         return fig
 
-    def plot_silhouette_scores(
-        self, X: pd.DataFrame, max_clusters: int = 10
-    ) -> plt.Figure:
+    def plot_silhouette_scores(self, X: pd.DataFrame, max_clusters: int = 10) -> plt.Figure:
         """Plot silhouette scores for different cluster counts."""
         X_scaled = self.scaler.fit_transform(X)
         silhouette_scores = []
@@ -103,9 +97,7 @@ class ClusteringTrainer(BaseTrainer):
 
         return fig
 
-    def plot_cluster_distribution(
-        self, X: pd.DataFrame, labels: np.ndarray
-    ) -> plt.Figure:
+    def plot_cluster_distribution(self, X: pd.DataFrame, labels: np.ndarray) -> plt.Figure:
         """Plot cluster distribution and sizes."""
         unique_labels, counts = np.unique(labels, return_counts=True)
 
@@ -119,9 +111,7 @@ class ClusteringTrainer(BaseTrainer):
         ax1.grid(True, alpha=0.3, axis="y")
 
         # Pie chart
-        ax2.pie(
-            counts, labels=[f"Cluster {i}" for i in unique_labels], autopct="%1.1f%%"
-        )
+        ax2.pie(counts, labels=[f"Cluster {i}" for i in unique_labels], autopct="%1.1f%%")
         ax2.set_title(f"Cluster Distribution - {self.model_name}")
 
         plt.tight_layout()
@@ -133,9 +123,7 @@ class ClusteringTrainer(BaseTrainer):
         """Plot 2D scatter plot of clusters using two features."""
         fig, ax = plt.subplots(figsize=(10, 8))
 
-        scatter = ax.scatter(
-            X[feature_x], X[feature_y], c=labels, cmap="viridis", alpha=0.6, s=50
-        )
+        scatter = ax.scatter(X[feature_x], X[feature_y], c=labels, cmap="viridis", alpha=0.6, s=50)
         ax.set_xlabel(feature_x)
         ax.set_ylabel(feature_y)
         ax.set_title(f"Cluster Scatter Plot - {self.model_name}")
@@ -143,9 +131,7 @@ class ClusteringTrainer(BaseTrainer):
 
         return fig
 
-    def get_cluster_profiles(
-        self, X: pd.DataFrame, labels: np.ndarray
-    ) -> pd.DataFrame:
+    def get_cluster_profiles(self, X: pd.DataFrame, labels: np.ndarray) -> pd.DataFrame:
         """Get statistical profile for each cluster."""
         X_with_labels = X.copy()
         X_with_labels["cluster"] = labels
@@ -154,9 +140,7 @@ class ClusteringTrainer(BaseTrainer):
         cluster_profiles = X_with_labels.groupby("cluster").mean()
 
         # Add cluster sizes
-        cluster_profiles["cluster_size"] = (
-            X_with_labels.groupby("cluster").size()
-        )
+        cluster_profiles["cluster_size"] = X_with_labels.groupby("cluster").size()
 
         return cluster_profiles
 
@@ -215,9 +199,7 @@ class KMeansTrainer(ClusteringTrainer):
 
         # Calculate inertia
         logger.info(f"K-Means inertia: {self.model.inertia_:.2f}")
-        logger.info(
-            f"K-Means iterations: {self.model.n_iter_}"
-        )
+        logger.info(f"K-Means iterations: {self.model.n_iter_}")
 
         return self
 
@@ -232,9 +214,7 @@ class KMeansTrainer(ClusteringTrainer):
 
     def _fit_for_elbow(self, X_scaled: np.ndarray, k: int) -> float:
         """Fit model and return inertia for elbow plot."""
-        temp_model = KMeans(
-            n_clusters=k, init=self.init, n_init=self.n_init, random_state=42
-        )
+        temp_model = KMeans(n_clusters=k, init=self.init, n_init=self.n_init, random_state=42)
         temp_model.fit(X_scaled)
         return temp_model.inertia_
 
@@ -285,9 +265,7 @@ class GaussianMixtureTrainer(ClusteringTrainer):
         y_val: Optional[pd.Series] = None,
     ) -> "GaussianMixtureTrainer":
         """Train Gaussian Mixture model."""
-        logger.info(
-            f"Training Gaussian Mixture with {self.n_components} components..."
-        )
+        logger.info(f"Training Gaussian Mixture with {self.n_components} components...")
 
         # Scale the data
         X_scaled = self.scaler.fit_transform(X_train)
@@ -356,9 +334,8 @@ if __name__ == "__main__":
     LIMIT 10000
     """
 
-    # Using engine directly
-        conn = db_manager.engine
-        df = pd.read_sql(query, conn)
+    conn = db_manager.engine
+    df = pd.read_sql(query, conn)
 
     # Select features for clustering (numerical only)
     feature_cols = [
@@ -383,9 +360,7 @@ if __name__ == "__main__":
     logger.info(f"K-Means Metrics: {metrics}")
 
     # Get cluster profiles
-    cluster_profiles = kmeans_trainer.get_cluster_profiles(
-        X, kmeans_trainer.cluster_labels
-    )
+    cluster_profiles = kmeans_trainer.get_cluster_profiles(X, kmeans_trainer.cluster_labels)
     logger.info(f"\nCluster Profiles:\n{cluster_profiles}")
 
     # Train Gaussian Mixture
@@ -393,9 +368,7 @@ if __name__ == "__main__":
     logger.info("Training Gaussian Mixture Model...")
     logger.info(f"{'='*60}")
 
-    gmm_trainer = GaussianMixtureTrainer(
-        n_components=5, covariance_type="full"
-    )
+    gmm_trainer = GaussianMixtureTrainer(n_components=5, covariance_type="full")
     gmm_trainer.prepare_data(X, target_col=None)
     gmm_trainer.train(X)
 

@@ -182,19 +182,33 @@ class ModelInsightsGenerator:
 
             if len(values) > 0:
                 analysis.append(f"### {metric_name.upper()}\n")
-                analysis.append(f"- **Best**: {values.min():.6f}" if "error" in metric_name or "loss" in metric_name else f"- **Best**: {values.max():.6f}")
-                analysis.append(f"- **Worst**: {values.max():.6f}" if "error" in metric_name or "loss" in metric_name else f"- **Worst**: {values.min():.6f}")
+                analysis.append(
+                    f"- **Best**: {values.min():.6f}"
+                    if "error" in metric_name or "loss" in metric_name
+                    else f"- **Best**: {values.max():.6f}"
+                )
+                analysis.append(
+                    f"- **Worst**: {values.max():.6f}"
+                    if "error" in metric_name or "loss" in metric_name
+                    else f"- **Worst**: {values.min():.6f}"
+                )
                 analysis.append(f"- **Mean**: {values.mean():.6f}")
                 analysis.append(f"- **Std Dev**: {values.std():.6f}")
 
                 # Performance spread
                 spread = (values.max() - values.min()) / values.mean() * 100
                 if spread < 5:
-                    analysis.append(f"- **Consistency**: ✅ Models perform similarly (spread: {spread:.1f}%)")
+                    analysis.append(
+                        f"- **Consistency**: ✅ Models perform similarly (spread: {spread:.1f}%)"
+                    )
                 elif spread < 20:
-                    analysis.append(f"- **Consistency**: ⚠️ Moderate variation (spread: {spread:.1f}%)")
+                    analysis.append(
+                        f"- **Consistency**: ⚠️ Moderate variation (spread: {spread:.1f}%)"
+                    )
                 else:
-                    analysis.append(f"- **Consistency**: ❌ High variation (spread: {spread:.1f}%) - hyperparameter tuning recommended")
+                    analysis.append(
+                        f"- **Consistency**: ❌ High variation (spread: {spread:.1f}%) - hyperparameter tuning recommended"
+                    )
 
                 analysis.append("")
 
@@ -228,7 +242,9 @@ class ModelInsightsGenerator:
                     # If numeric, show range
                     try:
                         numeric_vals = pd.to_numeric(values)
-                        analysis.append(f"\n**Range**: {numeric_vals.min()} to {numeric_vals.max()}")
+                        analysis.append(
+                            f"\n**Range**: {numeric_vals.min()} to {numeric_vals.max()}"
+                        )
                     except:
                         pass
 
@@ -333,8 +349,8 @@ class ModelInsightsGenerator:
         report += "|--------|----------|------------|------------|--------|\n"
 
         for metric in sorted(all_metrics):
-            champ_val = champion_metrics.get(metric, float('nan'))
-            chall_val = challenger_metrics.get(metric, float('nan'))
+            champ_val = champion_metrics.get(metric, float("nan"))
+            chall_val = challenger_metrics.get(metric, float("nan"))
 
             if pd.notna(champ_val) and pd.notna(chall_val):
                 diff = chall_val - champ_val
@@ -454,8 +470,7 @@ if __name__ == "__main__":
 
     # Generate comparison report
     report = generator.generate_comparison_report(
-        "SmartAnalytics_Regression",
-        output_path=Path("docs/model_comparison.md")
+        "SmartAnalytics_Regression", output_path=Path("docs/model_comparison.md")
     )
 
     print("Comparison report generated!")

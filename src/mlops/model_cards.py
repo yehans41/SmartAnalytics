@@ -31,9 +31,7 @@ class ModelCardGenerator:
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.registry = ModelRegistry()
 
-    def generate_model_card(
-        self, run_id: str, include_feature_importance: bool = True
-    ) -> str:
+    def generate_model_card(self, run_id: str, include_feature_importance: bool = True) -> str:
         """Generate a model card for a specific run.
 
         Args:
@@ -251,7 +249,9 @@ Discovers natural groupings in taxi trip patterns to identify:
             r2 = metrics.get("r2", 0)
 
             if rmse > 0:
-                interpretation += f"- **RMSE ({rmse:.2f})**: On average, predictions are off by ${rmse:.2f}\n"
+                interpretation += (
+                    f"- **RMSE ({rmse:.2f})**: On average, predictions are off by ${rmse:.2f}\n"
+                )
 
             if r2 > 0:
                 interpretation += f"- **R² ({r2:.4f})**: Model explains {r2*100:.2f}% of variance in fare amounts\n"
@@ -274,7 +274,9 @@ Discovers natural groupings in taxi trip patterns to identify:
                 interpretation += f"- **Accuracy ({accuracy:.4f})**: Correctly classifies {accuracy*100:.2f}% of trips\n"
 
             if f1 > 0:
-                interpretation += f"- **F1-Score ({f1:.4f})**: Balanced measure of precision and recall\n"
+                interpretation += (
+                    f"- **F1-Score ({f1:.4f})**: Balanced measure of precision and recall\n"
+                )
 
             if roc_auc > 0:
                 interpretation += f"- **ROC-AUC ({roc_auc:.4f})**: Area under ROC curve\n"
@@ -290,9 +292,7 @@ Discovers natural groupings in taxi trip patterns to identify:
 
         return interpretation
 
-    def _generate_insights(
-        self, params: Dict, metrics: Dict, experiment_name: str
-    ) -> str:
+    def _generate_insights(self, params: Dict, metrics: Dict, experiment_name: str) -> str:
         """Generate insights about the model."""
         insights = []
 
@@ -338,13 +338,13 @@ Discovers natural groupings in taxi trip patterns to identify:
                 )
 
         if not insights:
-            insights.append("- Model trained successfully with recorded hyperparameters and metrics")
+            insights.append(
+                "- Model trained successfully with recorded hyperparameters and metrics"
+            )
 
         return "\n".join(insights)
 
-    def _generate_recommendations(
-        self, params: Dict, metrics: Dict, experiment_name: str
-    ) -> str:
+    def _generate_recommendations(self, params: Dict, metrics: Dict, experiment_name: str) -> str:
         """Generate recommendations for model improvement."""
         recommendations = []
 
@@ -385,15 +385,11 @@ Discovers natural groupings in taxi trip patterns to identify:
         recommendations.append(
             "- **Ensemble Methods**: Combine multiple models for improved robustness"
         )
-        recommendations.append(
-            "- **Monitoring**: Set up model drift detection in production"
-        )
+        recommendations.append("- **Monitoring**: Set up model drift detection in production")
 
         return "\n".join(recommendations)
 
-    def _generate_usage_example(
-        self, run_id: str, params: Dict, experiment_name: str
-    ) -> str:
+    def _generate_usage_example(self, run_id: str, params: Dict, experiment_name: str) -> str:
         """Generate usage example code."""
         usage = f"""### Loading the Model
 
@@ -491,9 +487,7 @@ mlflow.register_model(
         logger.info(f"Model card saved to {output_path}")
         return output_path
 
-    def generate_cards_for_experiment(
-        self, experiment_name: str, max_runs: int = 5
-    ) -> List[Path]:
+    def generate_cards_for_experiment(self, experiment_name: str, max_runs: int = 5) -> List[Path]:
         """Generate model cards for best runs in an experiment.
 
         Args:
@@ -524,9 +518,7 @@ if __name__ == "__main__":
     generator = ModelCardGenerator()
 
     # Generate cards for latest regression models
-    paths = generator.generate_cards_for_experiment(
-        "SmartAnalytics_Regression", max_runs=3
-    )
+    paths = generator.generate_cards_for_experiment("SmartAnalytics_Regression", max_runs=3)
 
     print(f"Generated {len(paths)} model cards:")
     for path in paths:

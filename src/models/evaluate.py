@@ -96,9 +96,7 @@ class ModelEvaluator:
 
             results.append(metrics)
 
-        comparison_df = pd.DataFrame(results).sort_values(
-            "f1_score", ascending=False
-        )
+        comparison_df = pd.DataFrame(results).sort_values("f1_score", ascending=False)
         logger.info(f"\n{comparison_df}")
         return comparison_df
 
@@ -192,9 +190,7 @@ class ModelEvaluator:
         width = 0.2
 
         axes[1].bar(x - 1.5 * width, metrics_df["Accuracy"], width, label="Accuracy")
-        axes[1].bar(
-            x - 0.5 * width, metrics_df["Precision"], width, label="Precision"
-        )
+        axes[1].bar(x - 0.5 * width, metrics_df["Precision"], width, label="Precision")
         axes[1].bar(x + 0.5 * width, metrics_df["Recall"], width, label="Recall")
         axes[1].bar(x + 1.5 * width, metrics_df["F1-Score"], width, label="F1-Score")
 
@@ -258,9 +254,11 @@ class ModelEvaluator:
                 continue
 
             # Create dataframe and sort
-            importance_df = pd.DataFrame(
-                {"feature": feature_names, "importance": importance}
-            ).sort_values("importance", ascending=False).head(top_n)
+            importance_df = (
+                pd.DataFrame({"feature": feature_names, "importance": importance})
+                .sort_values("importance", ascending=False)
+                .head(top_n)
+            )
 
             # Plot
             axes[idx].barh(
@@ -278,9 +276,7 @@ class ModelEvaluator:
         plt.tight_layout()
         return fig
 
-    def get_mlflow_runs(
-        self, experiment_name: str, max_results: int = 100
-    ) -> pd.DataFrame:
+    def get_mlflow_runs(self, experiment_name: str, max_results: int = 100) -> pd.DataFrame:
         """Retrieve MLflow runs for an experiment."""
         logger.info(f"Fetching MLflow runs for experiment: {experiment_name}")
 
@@ -369,10 +365,7 @@ class ModelEvaluator:
         # Save figures
         if figures:
             for idx, fig in enumerate(figures):
-                fig_path = (
-                    self.output_dir
-                    / f"{model_type}_comparison_{timestamp}_fig{idx}.png"
-                )
+                fig_path = self.output_dir / f"{model_type}_comparison_{timestamp}_fig{idx}.png"
                 fig.savefig(fig_path, dpi=150, bbox_inches="tight")
                 report += f"\n![Figure {idx}]({fig_path.name})\n"
 
@@ -398,9 +391,8 @@ if __name__ == "__main__":
     LIMIT 5000
     """
 
-    # Using engine directly
-        conn = db_manager.engine
-        df = pd.read_sql(query, conn)
+    conn = db_manager.engine
+    df = pd.read_sql(query, conn)
 
     # Prepare features
     feature_cols = [
@@ -411,16 +403,12 @@ if __name__ == "__main__":
 
     X = df[feature_cols].dropna()
     y_reg = df.loc[X.index, "fare_amount"]
-    y_clf = (df.loc[X.index, "tip_amount"] > df["tip_amount"].median()).astype(
-        int
-    )
+    y_clf = (df.loc[X.index, "tip_amount"] > df["tip_amount"].median()).astype(int)
 
     X_train, X_test, y_train_reg, y_test_reg = train_test_split(
         X, y_reg, test_size=0.2, random_state=42
     )
-    _, _, y_train_clf, y_test_clf = train_test_split(
-        X, y_clf, test_size=0.2, random_state=42
-    )
+    _, _, y_train_clf, y_test_clf = train_test_split(X, y_clf, test_size=0.2, random_state=42)
 
     # Test regression comparison
     logger.info("\nTesting regression model comparison...")
@@ -432,37 +420,25 @@ if __name__ == "__main__":
     }
 
     evaluator = ModelEvaluator()
-    reg_comparison = evaluator.compare_regression_models(
-        reg_models, X_test, y_test_reg
-    )
+    reg_comparison = evaluator.compare_regression_models(reg_models, X_test, y_test_reg)
 
     # Test classification comparison
     logger.info("\nTesting classification model comparison...")
     clf_models = {
-        "LogisticRegression": LogisticRegression(max_iter=1000).fit(
-            X_train, y_train_clf
-        ),
+        "LogisticRegression": LogisticRegression(max_iter=1000).fit(X_train, y_train_clf),
         "RandomForest": RandomForestClassifier(n_estimators=50, random_state=42).fit(
             X_train, y_train_clf
         ),
     }
 
-    clf_comparison = evaluator.compare_classification_models(
-        clf_models, X_test, y_test_clf
-    )
+    clf_comparison = evaluator.compare_classification_models(clf_models, X_test, y_test_clf)
 
     # Create plots
-    reg_fig = evaluator.plot_regression_comparison(
-        reg_models, X_test, y_test_reg
-    )
-    clf_fig = evaluator.plot_classification_comparison(
-        clf_models, X_test, y_test_clf
-    )
+    reg_fig = evaluator.plot_regression_comparison(reg_models, X_test, y_test_reg)
+    clf_fig = evaluator.plot_classification_comparison(clf_models, X_test, y_test_clf)
 
     # Save reports
     evaluator.save_evaluation_report(reg_comparison, "regression", [reg_fig])
-    evaluator.save_evaluation_report(
-        clf_comparison, "classification", [clf_fig]
-    )
+    evaluator.save_evaluation_report(clf_comparison, "classification", [clf_fig])
 
     logger.info("\nEvaluation complete!")

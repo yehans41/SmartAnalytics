@@ -214,9 +214,7 @@ class TaxiDataIngester:
 
         logger.info("=" * 60)
 
-    def insert_to_database(
-        self, df: pd.DataFrame, if_exists: str = "append"
-    ) -> None:
+    def insert_to_database(self, df: pd.DataFrame, if_exists: str = "append") -> None:
         """Insert DataFrame into MySQL database.
 
         Args:
@@ -398,9 +396,7 @@ def run_ingestion(
     # Step 2: Ingest data
     logger.info("Step 2: Ingesting data...")
     ingester = TaxiDataIngester()
-    stats = ingester.ingest_multiple_files(
-        filepaths, if_exists=if_exists, sample_size=sample_size
-    )
+    stats = ingester.ingest_multiple_files(filepaths, if_exists=if_exists, sample_size=sample_size)
 
     # Summary
     elapsed = time.time() - start_time
@@ -420,12 +416,8 @@ if __name__ == "__main__":
     parser.add_argument("--year", type=int, default=2023, help="Year to ingest")
     parser.add_argument("--start-month", type=int, default=1, help="Starting month")
     parser.add_argument("--end-month", type=int, default=1, help="Ending month")
-    parser.add_argument(
-        "--no-download", action="store_true", help="Skip download step"
-    )
-    parser.add_argument(
-        "--sample", type=int, default=None, help="Sample size per file"
-    )
+    parser.add_argument("--no-download", action="store_true", help="Skip download step")
+    parser.add_argument("--sample", type=int, default=None, help="Sample size per file")
     parser.add_argument(
         "--mode",
         choices=["replace", "append", "fail"],

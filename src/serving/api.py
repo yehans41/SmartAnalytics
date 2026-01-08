@@ -57,9 +57,7 @@ class PredictionRequest(BaseModel):
 
     features: Dict[str, float] = Field(..., description="Feature values")
     model_run_id: Optional[str] = Field(None, description="Specific model run ID")
-    experiment_name: Optional[str] = Field(
-        "nyc_taxi_analysis", description="Experiment to use"
-    )
+    experiment_name: Optional[str] = Field("nyc_taxi_analysis", description="Experiment to use")
 
 
 class PredictionResponse(BaseModel):
@@ -149,9 +147,7 @@ async def list_models():
 
 
 @app.get("/experiments/{experiment_name}/runs", response_model=List[ExperimentInfo])
-async def list_experiment_runs(
-    experiment_name: str, max_results: int = Query(10, ge=1, le=100)
-):
+async def list_experiment_runs(experiment_name: str, max_results: int = Query(10, ge=1, le=100)):
     """List runs from an experiment."""
     try:
         runs = registry.get_latest_runs(experiment_name, max_results=max_results)
@@ -171,9 +167,7 @@ async def get_best_model(
     try:
         best = registry.get_best_model(experiment_name, metric=metric, mode=mode)
         if best is None:
-            raise HTTPException(
-                status_code=404, detail=f"No models found in {experiment_name}"
-            )
+            raise HTTPException(status_code=404, detail=f"No models found in {experiment_name}")
         return best
     except HTTPException:
         raise
@@ -338,9 +332,7 @@ async def predict_fare(
         features["trip_distance"] = distance_miles
 
     # Create prediction request
-    request = PredictionRequest(
-        features=features, experiment_name="nyc_taxi_analysis"
-    )
+    request = PredictionRequest(features=features, experiment_name="nyc_taxi_analysis")
 
     return await predict(request)
 

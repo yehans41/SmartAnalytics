@@ -66,9 +66,7 @@ class ModelTrainingOrchestrator:
             "dimensionality_reduction": [],
         }
 
-    def load_data(
-        self, limit: int = 50000, days_back: int = 30
-    ) -> pd.DataFrame:
+    def load_data(self, limit: int = 50000, days_back: int = 30) -> pd.DataFrame:
         """Load data from feature store."""
         logger.info(f"Loading data from feature store (last {days_back} days)...")
 
@@ -85,9 +83,7 @@ class ModelTrainingOrchestrator:
         logger.info(f"Loaded {len(df)} rows with {len(df.columns)} columns")
         return df
 
-    def prepare_regression_data(
-        self, df: pd.DataFrame
-    ) -> tuple[pd.DataFrame, str]:
+    def prepare_regression_data(self, df: pd.DataFrame) -> tuple[pd.DataFrame, str]:
         """Prepare data for regression tasks."""
         logger.info("Preparing regression data...")
 
@@ -116,16 +112,12 @@ class ModelTrainingOrchestrator:
         logger.info(f"Regression data: {len(df_clean)} rows, {len(feature_cols)} features")
         return df_clean, target_col
 
-    def prepare_classification_data(
-        self, df: pd.DataFrame
-    ) -> tuple[pd.DataFrame, str]:
+    def prepare_classification_data(self, df: pd.DataFrame) -> tuple[pd.DataFrame, str]:
         """Prepare data for classification tasks."""
         logger.info("Preparing classification data...")
 
         # Create binary target: high tip (> median) vs low tip
-        df["high_tip"] = (
-            df["tip_amount"] > df["tip_amount"].median()
-        ).astype(int)
+        df["high_tip"] = (df["tip_amount"] > df["tip_amount"].median()).astype(int)
         target_col = "high_tip"
 
         # Select features
@@ -146,9 +138,7 @@ class ModelTrainingOrchestrator:
 
         df_clean = df[feature_cols + [target_col]].dropna()
 
-        logger.info(
-            f"Classification data: {len(df_clean)} rows, {len(feature_cols)} features"
-        )
+        logger.info(f"Classification data: {len(df_clean)} rows, {len(feature_cols)} features")
         logger.info(f"Class distribution:\n{df_clean[target_col].value_counts()}")
         return df_clean, target_col
 
@@ -195,9 +185,7 @@ class ModelTrainingOrchestrator:
 
         return results
 
-    def train_classification_models(
-        self, df: pd.DataFrame
-    ) -> List[Dict[str, Any]]:
+    def train_classification_models(self, df: pd.DataFrame) -> List[Dict[str, Any]]:
         """Train all classification models."""
         logger.info("\n" + "=" * 80)
         logger.info("TRAINING CLASSIFICATION MODELS")
@@ -210,9 +198,7 @@ class ModelTrainingOrchestrator:
             LogisticRegressionTrainer(C=1.0, max_iter=1000),
             RandomForestClassifierTrainer(n_estimators=100, max_depth=10),
             XGBoostClassifierTrainer(n_estimators=100, max_depth=6),
-            MLPClassifierTrainer(
-                hidden_layer_sizes=(100, 50), max_iter=300
-            ),
+            MLPClassifierTrainer(hidden_layer_sizes=(100, 50), max_iter=300),
         ]
 
         results = []
@@ -264,9 +250,7 @@ class ModelTrainingOrchestrator:
 
         return results
 
-    def train_dim_reduction_models(
-        self, df: pd.DataFrame
-    ) -> List[Dict[str, Any]]:
+    def train_dim_reduction_models(self, df: pd.DataFrame) -> List[Dict[str, Any]]:
         """Train all dimensionality reduction models."""
         logger.info("\n" + "=" * 80)
         logger.info("TRAINING DIMENSIONALITY REDUCTION MODELS")
@@ -276,9 +260,7 @@ class ModelTrainingOrchestrator:
 
         # Prepare target for LDA
         df_with_target = df.copy()
-        df_with_target["high_tip"] = (
-            df["tip_amount"] > df["tip_amount"].median()
-        ).astype(int)
+        df_with_target["high_tip"] = (df["tip_amount"] > df["tip_amount"].median()).astype(int)
         y = df_with_target["high_tip"]
 
         # Define models to train
@@ -366,7 +348,9 @@ class ModelTrainingOrchestrator:
 
     def save_report(self, report: str) -> Path:
         """Save comparison report to file."""
-        report_path = self.output_dir / f"model_comparison_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
+        report_path = (
+            self.output_dir / f"model_comparison_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
+        )
         report_path.write_text(report)
         logger.info(f"Report saved to {report_path}")
         return report_path
@@ -419,9 +403,7 @@ class ModelTrainingOrchestrator:
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Train all Smart Analytics models"
-    )
+    parser = argparse.ArgumentParser(description="Train all Smart Analytics models")
     parser.add_argument(
         "--limit",
         type=int,

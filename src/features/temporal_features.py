@@ -62,9 +62,7 @@ class TemporalFeatureEngineer:
         logger.info(f"✓ Extracted {len(new_features)} datetime components")
         return df
 
-    def create_cyclical_features(
-        self, df: pd.DataFrame, col: str, period: int
-    ) -> pd.DataFrame:
+    def create_cyclical_features(self, df: pd.DataFrame, col: str, period: int) -> pd.DataFrame:
         """Create cyclical encoding using sin/cos.
 
         Args:
@@ -132,9 +130,7 @@ class TemporalFeatureEngineer:
         df["is_weekend"] = df["day_of_week"].isin([5, 6])
 
         # Business hours
-        df["is_business_hours"] = (
-            (df["hour"] >= 9) & (df["hour"] <= 17) & (~df["is_weekend"])
-        )
+        df["is_business_hours"] = (df["hour"] >= 9) & (df["hour"] <= 17) & (~df["is_weekend"])
 
         new_features = [
             "time_of_day",
@@ -166,17 +162,12 @@ class TemporalFeatureEngineer:
         # Major US holidays (simplified - just checking month/day)
         df["is_new_years"] = (df["month"] == 1) & (df["day"] == 1)
         df["is_july_4th"] = (df["month"] == 7) & (df["day"] == 4)
-        df["is_thanksgiving"] = (
-            (df["month"] == 11) & (df["day"] >= 22) & (df["day"] <= 28)
-        )
+        df["is_thanksgiving"] = (df["month"] == 11) & (df["day"] >= 22) & (df["day"] <= 28)
         df["is_christmas"] = (df["month"] == 12) & (df["day"] == 25)
 
         # Any holiday
         df["is_holiday"] = (
-            df["is_new_years"]
-            | df["is_july_4th"]
-            | df["is_thanksgiving"]
-            | df["is_christmas"]
+            df["is_new_years"] | df["is_july_4th"] | df["is_thanksgiving"] | df["is_christmas"]
         )
 
         new_features = [
@@ -252,9 +243,7 @@ class TemporalFeatureEngineer:
                 df[col_name] = df[value_col].rolling(window=window).agg(func)
                 self.feature_names.append(col_name)
 
-        logger.info(
-            f"✓ Created {len(windows) * len(agg_funcs)} rolling features"
-        )
+        logger.info(f"✓ Created {len(windows) * len(agg_funcs)} rolling features")
         return df
 
     def engineer_all_temporal_features(

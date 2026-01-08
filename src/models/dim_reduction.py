@@ -37,18 +37,12 @@ class DimensionalityReductionTrainer(BaseTrainer):
 
         metrics = {
             "n_components": X_transformed.shape[1],
-            "total_variance_explained": float(
-                np.sum(self.explained_variance_ratio_)
-            ),
+            "total_variance_explained": float(np.sum(self.explained_variance_ratio_)),
         }
 
         if len(self.explained_variance_ratio_) >= 2:
-            metrics["first_component_variance"] = float(
-                self.explained_variance_ratio_[0]
-            )
-            metrics["second_component_variance"] = float(
-                self.explained_variance_ratio_[1]
-            )
+            metrics["first_component_variance"] = float(self.explained_variance_ratio_[0])
+            metrics["second_component_variance"] = float(self.explained_variance_ratio_[1])
 
         logger.info(f"{self.model_name} Metrics: {metrics}")
         return metrics
@@ -136,9 +130,7 @@ class DimensionalityReductionTrainer(BaseTrainer):
 
         return fig
 
-    def plot_3d_projection(
-        self, X: pd.DataFrame, y: Optional[pd.Series] = None
-    ) -> plt.Figure:
+    def plot_3d_projection(self, X: pd.DataFrame, y: Optional[pd.Series] = None) -> plt.Figure:
         """Plot 3D projection of data."""
         X_transformed = self.transform(X)
 
@@ -168,15 +160,9 @@ class DimensionalityReductionTrainer(BaseTrainer):
                 s=50,
             )
 
-        ax.set_xlabel(
-            f"PC1 ({self.explained_variance_ratio_[0]:.2%} variance)"
-        )
-        ax.set_ylabel(
-            f"PC2 ({self.explained_variance_ratio_[1]:.2%} variance)"
-        )
-        ax.set_zlabel(
-            f"PC3 ({self.explained_variance_ratio_[2]:.2%} variance)"
-        )
+        ax.set_xlabel(f"PC1 ({self.explained_variance_ratio_[0]:.2%} variance)")
+        ax.set_ylabel(f"PC2 ({self.explained_variance_ratio_[1]:.2%} variance)")
+        ax.set_zlabel(f"PC3 ({self.explained_variance_ratio_[2]:.2%} variance)")
         ax.set_title(f"3D Projection - {self.model_name}")
 
         return fig
@@ -188,9 +174,7 @@ class DimensionalityReductionTrainer(BaseTrainer):
 
         loadings = pd.DataFrame(
             self.model.components_.T,
-            columns=[
-                f"PC{i+1}" for i in range(self.model.components_.shape[0])
-            ],
+            columns=[f"PC{i+1}" for i in range(self.model.components_.shape[0])],
             index=feature_names,
         )
 
@@ -242,9 +226,7 @@ class PCATrainer(DimensionalityReductionTrainer):
         self.explained_variance_ratio_ = self.model.explained_variance_ratio_
 
         logger.info(f"PCA n_components: {self.model.n_components_}")
-        logger.info(
-            f"Total variance explained: {np.sum(self.explained_variance_ratio_):.4f}"
-        )
+        logger.info(f"Total variance explained: {np.sum(self.explained_variance_ratio_):.4f}")
 
         # Log top components
         for i, var in enumerate(self.explained_variance_ratio_[:5]):
@@ -270,18 +252,14 @@ class PCATrainer(DimensionalityReductionTrainer):
 class LDATrainer(DimensionalityReductionTrainer):
     """Linear Discriminant Analysis for dimensionality reduction."""
 
-    def __init__(
-        self, n_components: Optional[int] = None, solver: str = "svd"
-    ):
+    def __init__(self, n_components: Optional[int] = None, solver: str = "svd"):
         super().__init__(model_name="LDA")
         self.n_components = n_components
         self.solver = solver
 
     def build_model(self) -> LinearDiscriminantAnalysis:
         """Build LDA model."""
-        return LinearDiscriminantAnalysis(
-            n_components=self.n_components, solver=self.solver
-        )
+        return LinearDiscriminantAnalysis(n_components=self.n_components, solver=self.solver)
 
     def train(
         self,
@@ -307,9 +285,7 @@ class LDATrainer(DimensionalityReductionTrainer):
         self.explained_variance_ratio_ = self.model.explained_variance_ratio_
 
         logger.info(f"LDA n_components: {len(self.explained_variance_ratio_)}")
-        logger.info(
-            f"Total variance explained: {np.sum(self.explained_variance_ratio_):.4f}"
-        )
+        logger.info(f"Total variance explained: {np.sum(self.explained_variance_ratio_):.4f}")
 
         # Log discriminant ratios
         for i, var in enumerate(self.explained_variance_ratio_):
@@ -317,9 +293,7 @@ class LDATrainer(DimensionalityReductionTrainer):
 
         return self
 
-    def evaluate(
-        self, X_test: pd.DataFrame, y_test: pd.Series
-    ) -> Dict[str, float]:
+    def evaluate(self, X_test: pd.DataFrame, y_test: pd.Series) -> Dict[str, float]:
         """Evaluate LDA model (includes classification accuracy)."""
         # Get dimensionality reduction metrics
         metrics = super().evaluate(X_test, y_test)
@@ -350,9 +324,8 @@ if __name__ == "__main__":
     LIMIT 10000
     """
 
-    # Using engine directly
-        conn = db_manager.engine
-        df = pd.read_sql(query, conn)
+    conn = db_manager.engine
+    df = pd.read_sql(query, conn)
 
     # Select features
     feature_cols = [
@@ -380,9 +353,7 @@ if __name__ == "__main__":
     logger.info(f"PCA Metrics: {metrics}")
 
     # Get top features
-    top_features = pca_trainer.get_top_features_per_component(
-        feature_cols, top_n=5
-    )
+    top_features = pca_trainer.get_top_features_per_component(feature_cols, top_n=5)
     logger.info(f"\nTop Features per Component:")
     for comp, features in list(top_features.items())[:3]:
         logger.info(f"  {comp}: {features}")

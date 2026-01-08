@@ -77,28 +77,29 @@ class RegressionTrainer(BaseTrainer):
 
         # Residuals vs Predicted
         axes[0, 0].scatter(y_pred, residuals, alpha=0.5)
-        axes[0, 0].axhline(y=0, color='r', linestyle='--')
-        axes[0, 0].set_xlabel('Predicted Values')
-        axes[0, 0].set_ylabel('Residuals')
-        axes[0, 0].set_title('Residuals vs Predicted')
+        axes[0, 0].axhline(y=0, color="r", linestyle="--")
+        axes[0, 0].set_xlabel("Predicted Values")
+        axes[0, 0].set_ylabel("Residuals")
+        axes[0, 0].set_title("Residuals vs Predicted")
 
         # Histogram of residuals
-        axes[0, 1].hist(residuals, bins=50, edgecolor='black')
-        axes[0, 1].set_xlabel('Residuals')
-        axes[0, 1].set_ylabel('Frequency')
-        axes[0, 1].set_title('Distribution of Residuals')
+        axes[0, 1].hist(residuals, bins=50, edgecolor="black")
+        axes[0, 1].set_xlabel("Residuals")
+        axes[0, 1].set_ylabel("Frequency")
+        axes[0, 1].set_title("Distribution of Residuals")
 
         # Actual vs Predicted
         axes[1, 0].scatter(y_test, y_pred, alpha=0.5)
-        axes[1, 0].plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--')
-        axes[1, 0].set_xlabel('Actual Values')
-        axes[1, 0].set_ylabel('Predicted Values')
-        axes[1, 0].set_title('Actual vs Predicted')
+        axes[1, 0].plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], "r--")
+        axes[1, 0].set_xlabel("Actual Values")
+        axes[1, 0].set_ylabel("Predicted Values")
+        axes[1, 0].set_title("Actual vs Predicted")
 
         # Q-Q plot
         from scipy import stats
+
         stats.probplot(residuals, dist="norm", plot=axes[1, 1])
-        axes[1, 1].set_title('Q-Q Plot')
+        axes[1, 1].set_title("Q-Q Plot")
 
         plt.tight_layout()
 
@@ -106,7 +107,7 @@ class RegressionTrainer(BaseTrainer):
             save_path = Path(config.mlflow.artifact_location) / f"{self.model_name}_residuals.png"
 
         save_path.parent.mkdir(parents=True, exist_ok=True)
-        plt.savefig(save_path, dpi=100, bbox_inches='tight')
+        plt.savefig(save_path, dpi=100, bbox_inches="tight")
         plt.close()
 
         logger.info(f"Residual plot saved to: {save_path}")
@@ -125,7 +126,11 @@ class LinearRegressionTrainer(RegressionTrainer):
         return LinearRegression()
 
     def train(
-        self, X_train: np.ndarray, y_train: np.ndarray, X_val: Optional[np.ndarray] = None, y_val: Optional[np.ndarray] = None
+        self,
+        X_train: np.ndarray,
+        y_train: np.ndarray,
+        X_val: Optional[np.ndarray] = None,
+        y_val: Optional[np.ndarray] = None,
     ) -> None:
         """Train Linear Regression model."""
         logger.info("Training Linear Regression...")
@@ -146,7 +151,11 @@ class RidgeRegressionTrainer(RegressionTrainer):
         return Ridge(alpha=self.params["alpha"], random_state=self.random_state)
 
     def train(
-        self, X_train: np.ndarray, y_train: np.ndarray, X_val: Optional[np.ndarray] = None, y_val: Optional[np.ndarray] = None
+        self,
+        X_train: np.ndarray,
+        y_train: np.ndarray,
+        X_val: Optional[np.ndarray] = None,
+        y_val: Optional[np.ndarray] = None,
     ) -> None:
         """Train Ridge Regression model."""
         logger.info(f"Training Ridge Regression (alpha={self.params['alpha']})...")
@@ -167,7 +176,11 @@ class LassoRegressionTrainer(RegressionTrainer):
         return Lasso(alpha=self.params["alpha"], random_state=self.random_state)
 
     def train(
-        self, X_train: np.ndarray, y_train: np.ndarray, X_val: Optional[np.ndarray] = None, y_val: Optional[np.ndarray] = None
+        self,
+        X_train: np.ndarray,
+        y_train: np.ndarray,
+        X_val: Optional[np.ndarray] = None,
+        y_val: Optional[np.ndarray] = None,
     ) -> None:
         """Train Lasso Regression model."""
         logger.info(f"Training Lasso Regression (alpha={self.params['alpha']})...")
@@ -196,7 +209,11 @@ class RandomForestRegressorTrainer(RegressionTrainer):
         )
 
     def train(
-        self, X_train: np.ndarray, y_train: np.ndarray, X_val: Optional[np.ndarray] = None, y_val: Optional[np.ndarray] = None
+        self,
+        X_train: np.ndarray,
+        y_train: np.ndarray,
+        X_val: Optional[np.ndarray] = None,
+        y_val: Optional[np.ndarray] = None,
     ) -> None:
         """Train Random Forest Regressor model."""
         logger.info(
@@ -235,7 +252,11 @@ class XGBoostRegressorTrainer(RegressionTrainer):
         )
 
     def train(
-        self, X_train: np.ndarray, y_train: np.ndarray, X_val: Optional[np.ndarray] = None, y_val: Optional[np.ndarray] = None
+        self,
+        X_train: np.ndarray,
+        y_train: np.ndarray,
+        X_val: Optional[np.ndarray] = None,
+        y_val: Optional[np.ndarray] = None,
     ) -> None:
         """Train XGBoost Regressor model."""
         logger.info(

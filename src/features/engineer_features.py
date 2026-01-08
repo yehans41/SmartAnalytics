@@ -240,12 +240,14 @@ class FeatureEngineer:
 
             # Add stats for numeric columns
             if df[col].dtype in ["int64", "float64"]:
-                feature_info.update({
-                    "mean": round(float(df[col].mean()), 4),
-                    "std": round(float(df[col].std()), 4),
-                    "min": round(float(df[col].min()), 4),
-                    "max": round(float(df[col].max()), 4),
-                })
+                feature_info.update(
+                    {
+                        "mean": round(float(df[col].mean()), 4),
+                        "std": round(float(df[col].std()), 4),
+                        "min": round(float(df[col].min()), 4),
+                        "max": round(float(df[col].max()), 4),
+                    }
+                )
 
             # Add category info for categorical columns
             if df[col].dtype == "object" or df[col].dtype.name == "category":

@@ -235,9 +235,7 @@ class DataValidator:
         if "trip_distance" in df.columns:
             zero_distance = (df["trip_distance"] <= 0).sum()
             if zero_distance > 0:
-                issues["trip_distance"] = [
-                    f"{zero_distance:,} trips with distance <= 0"
-                ]
+                issues["trip_distance"] = [f"{zero_distance:,} trips with distance <= 0"]
                 logger.warning(f"Found {zero_distance:,} trips with distance <= 0")
 
         # Fare should be >= 0
@@ -251,23 +249,15 @@ class DataValidator:
         if "passenger_count" in df.columns:
             zero_passengers = (df["passenger_count"] <= 0).sum()
             if zero_passengers > 0:
-                issues["passenger_count"] = [
-                    f"{zero_passengers:,} trips with <= 0 passengers"
-                ]
-                logger.warning(
-                    f"Found {zero_passengers:,} trips with <= 0 passengers"
-                )
+                issues["passenger_count"] = [f"{zero_passengers:,} trips with <= 0 passengers"]
+                logger.warning(f"Found {zero_passengers:,} trips with <= 0 passengers")
 
         # Check datetime order
         if "pickup_datetime" in df.columns and "dropoff_datetime" in df.columns:
             invalid_times = (df["dropoff_datetime"] <= df["pickup_datetime"]).sum()
             if invalid_times > 0:
-                issues["datetime"] = [
-                    f"{invalid_times:,} trips with dropoff <= pickup time"
-                ]
-                logger.warning(
-                    f"Found {invalid_times:,} trips with dropoff <= pickup time"
-                )
+                issues["datetime"] = [f"{invalid_times:,} trips with dropoff <= pickup time"]
+                logger.warning(f"Found {invalid_times:,} trips with dropoff <= pickup time")
 
         if not issues:
             logger.info("✓ All value ranges are valid")
@@ -317,12 +307,8 @@ class DataValidator:
             logger.error(f"✗ VALIDATION FAILED: {len(critical_failures)} critical issues")
 
         logger.info(f"Total checks: {len(self.validation_results)}")
-        logger.info(
-            f"Passed: {sum(1 for r in self.validation_results if r.passed)}"
-        )
-        logger.info(
-            f"Failed: {sum(1 for r in self.validation_results if not r.passed)}"
-        )
+        logger.info(f"Passed: {sum(1 for r in self.validation_results if r.passed)}")
+        logger.info(f"Failed: {sum(1 for r in self.validation_results if not r.passed)}")
         logger.info("=" * 60)
 
         return passed

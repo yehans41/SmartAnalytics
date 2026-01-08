@@ -135,9 +135,7 @@ class TestModelEndpoints:
         """Test getting best model."""
         mock_reg.get_best_model = mock_registry.get_best_model
 
-        response = client.get(
-            "/experiments/SmartAnalytics_Regression/best?metric=rmse&mode=min"
-        )
+        response = client.get("/experiments/SmartAnalytics_Regression/best?metric=rmse&mode=min")
 
         assert response.status_code == 200
         data = response.json()

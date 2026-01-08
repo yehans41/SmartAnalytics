@@ -37,9 +37,7 @@ class ClassificationTrainer(BaseTrainer):
     def __init__(self, model_name: str):
         super().__init__(model_name=model_name, model_type="classification")
 
-    def evaluate(
-        self, X_test: pd.DataFrame, y_test: pd.Series
-    ) -> Dict[str, float]:
+    def evaluate(self, X_test: pd.DataFrame, y_test: pd.Series) -> Dict[str, float]:
         """Evaluate classification model."""
         y_pred = self.model.predict(X_test)
         y_pred_proba = self.model.predict_proba(X_test)[:, 1]
@@ -55,9 +53,7 @@ class ClassificationTrainer(BaseTrainer):
         logger.info(f"{self.model_name} Classification Metrics: {metrics}")
         return metrics
 
-    def plot_confusion_matrix(
-        self, X_test: pd.DataFrame, y_test: pd.Series
-    ) -> plt.Figure:
+    def plot_confusion_matrix(self, X_test: pd.DataFrame, y_test: pd.Series) -> plt.Figure:
         """Plot confusion matrix."""
         y_pred = self.model.predict(X_test)
         cm = confusion_matrix(y_test, y_pred)
@@ -70,9 +66,7 @@ class ClassificationTrainer(BaseTrainer):
 
         return fig
 
-    def plot_roc_curve(
-        self, X_test: pd.DataFrame, y_test: pd.Series
-    ) -> plt.Figure:
+    def plot_roc_curve(self, X_test: pd.DataFrame, y_test: pd.Series) -> plt.Figure:
         """Plot ROC curve."""
         y_pred_proba = self.model.predict_proba(X_test)[:, 1]
         fpr, tpr, thresholds = roc_curve(y_test, y_pred_proba)
@@ -89,9 +83,7 @@ class ClassificationTrainer(BaseTrainer):
 
         return fig
 
-    def get_classification_report(
-        self, X_test: pd.DataFrame, y_test: pd.Series
-    ) -> str:
+    def get_classification_report(self, X_test: pd.DataFrame, y_test: pd.Series) -> str:
         """Get detailed classification report."""
         y_pred = self.model.predict(X_test)
         report = classification_report(y_test, y_pred)
@@ -357,9 +349,8 @@ if __name__ == "__main__":
     LIMIT 10000
     """
 
-    # Using engine directly
-        conn = db_manager.engine
-        df = pd.read_sql(query, conn)
+    conn = db_manager.engine
+    df = pd.read_sql(query, conn)
 
     # Create binary classification target (e.g., high tip vs low tip)
     df["high_tip"] = (df["tip_amount"] > df["tip_amount"].median()).astype(int)
@@ -384,9 +375,7 @@ if __name__ == "__main__":
         LogisticRegressionTrainer(C=1.0, max_iter=1000),
         RandomForestClassifierTrainer(n_estimators=50, max_depth=10),
         XGBoostClassifierTrainer(n_estimators=50, max_depth=6),
-        MLPClassifierTrainer(
-            hidden_layer_sizes=(100, 50), max_iter=300
-        ),
+        MLPClassifierTrainer(hidden_layer_sizes=(100, 50), max_iter=300),
     ]
 
     for trainer in classifiers:

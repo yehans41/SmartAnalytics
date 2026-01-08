@@ -41,9 +41,7 @@ class TaxiDataCleaner:
 
         return df
 
-    def handle_missing_values(
-        self, df: pd.DataFrame, strategy: str = "drop"
-    ) -> pd.DataFrame:
+    def handle_missing_values(self, df: pd.DataFrame, strategy: str = "drop") -> pd.DataFrame:
         """Handle missing values.
 
         Args:
@@ -326,9 +324,7 @@ class TaxiDataCleaner:
             self.cleaning_stats["initial_rows"] - self.cleaning_stats["final_rows"]
         )
         self.cleaning_stats["removal_percentage"] = (
-            self.cleaning_stats["total_removed"]
-            / self.cleaning_stats["initial_rows"]
-            * 100
+            self.cleaning_stats["total_removed"] / self.cleaning_stats["initial_rows"] * 100
         )
 
         logger.info("=" * 60)
@@ -406,18 +402,10 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Clean NYC Taxi Data")
-    parser.add_argument(
-        "--source", default="raw_taxi_trips", help="Source table name"
-    )
-    parser.add_argument(
-        "--dest", default="processed_taxi_trips", help="Destination table name"
-    )
-    parser.add_argument(
-        "--sample", type=int, default=None, help="Sample size for testing"
-    )
+    parser.add_argument("--source", default="raw_taxi_trips", help="Source table name")
+    parser.add_argument("--dest", default="processed_taxi_trips", help="Destination table name")
+    parser.add_argument("--sample", type=int, default=None, help="Sample size for testing")
 
     args = parser.parse_args()
 
-    run_cleaning_pipeline(
-        source_table=args.source, dest_table=args.dest, sample_size=args.sample
-    )
+    run_cleaning_pipeline(source_table=args.source, dest_table=args.dest, sample_size=args.sample)

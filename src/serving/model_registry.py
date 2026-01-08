@@ -58,9 +58,7 @@ class ModelRegistry:
             logger.warning(f"No registered models found: {e}")
             return []
 
-    def get_latest_runs(
-        self, experiment_name: str, max_results: int = 5
-    ) -> List[Dict[str, Any]]:
+    def get_latest_runs(self, experiment_name: str, max_results: int = 5) -> List[Dict[str, Any]]:
         """Get latest runs from an experiment.
 
         Args:
@@ -109,9 +107,7 @@ class ModelRegistry:
             logger.error(f"Error getting runs: {e}")
             return []
 
-    def load_model_by_run_id(
-        self, run_id: str, cache: bool = True
-    ) -> Any:
+    def load_model_by_run_id(self, run_id: str, cache: bool = True) -> Any:
         """Load a model from MLflow by run ID.
 
         Args:

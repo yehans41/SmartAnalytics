@@ -114,9 +114,7 @@ class DataQualityReporter:
 
         return outlier_info
 
-    def generate_visualizations(
-        self, df: pd.DataFrame, prefix: str = "quality"
-    ) -> Dict[str, Path]:
+    def generate_visualizations(self, df: pd.DataFrame, prefix: str = "quality") -> Dict[str, Path]:
         """Generate quality visualizations.
 
         Args:
@@ -267,14 +265,14 @@ class DataQualityReporter:
 """
 
         # Null values table
-        if null_info['columns_with_nulls'] > 0:
+        if null_info["columns_with_nulls"] > 0:
             md += "\n#### Null Values by Column\n\n"
             md += "| Column | Null Count | Percentage |\n"
             md += "|--------|------------|------------|\n"
 
-            for col, count in null_info['null_counts'].items():
+            for col, count in null_info["null_counts"].items():
                 if count > 0:
-                    pct = null_info['null_percentages'][col]
+                    pct = null_info["null_percentages"][col]
                     md += f"| {col} | {count:,} | {pct:.2f}% |\n"
 
         # Outliers
@@ -283,7 +281,7 @@ class DataQualityReporter:
         md += "|--------|-------|------------|--------|\n"
 
         for col, info in outlier_info.items():
-            if info['count'] > 0:
+            if info["count"] > 0:
                 md += f"| {col} | {info['count']:,} | {info['percentage']:.2f}% | [{info['lower_bound']:.2f}, {info['upper_bound']:.2f}] |\n"
 
         # Validation results
@@ -293,31 +291,31 @@ class DataQualityReporter:
             md += f"- **Passed**: {validation_results['passed']}\n"
             md += f"- **Failed**: {validation_results['failed']}\n\n"
 
-            if validation_results['failed'] > 0:
+            if validation_results["failed"] > 0:
                 md += "### Failed Checks\n\n"
                 md += "| Metric | Value | Threshold | Message |\n"
                 md += "|--------|-------|-----------|----------|\n"
 
-                for result in validation_results['results']:
-                    if not result['passed']:
+                for result in validation_results["results"]:
+                    if not result["passed"]:
                         md += f"| {result['metric']} | {result['value']:.4f} | {result['threshold']:.4f} | {result['message']} |\n"
 
         # Summary statistics
-        if 'numeric_summary' in summary:
+        if "numeric_summary" in summary:
             md += "\n---\n\n## Summary Statistics\n\n"
 
             # Get first few numeric columns for the table
-            numeric_cols = list(summary['numeric_summary'].keys())[:5]
+            numeric_cols = list(summary["numeric_summary"].keys())[:5]
 
             md += "| Statistic | " + " | ".join(numeric_cols) + " |\n"
             md += "|-----------|" + "|".join(["----------"] * len(numeric_cols)) + "|\n"
 
-            stats_rows = ['mean', 'std', 'min', '25%', '50%', '75%', 'max']
+            stats_rows = ["mean", "std", "min", "25%", "50%", "75%", "max"]
 
             for stat in stats_rows:
                 row = f"| {stat} |"
                 for col in numeric_cols:
-                    val = summary['numeric_summary'][col].get(stat, 0)
+                    val = summary["numeric_summary"][col].get(stat, 0)
                     row += f" {val:.2f} |"
                 md += row + "\n"
 
@@ -332,10 +330,10 @@ class DataQualityReporter:
         # Recommendations
         md += "\n---\n\n## Recommendations\n\n"
 
-        if null_info['total_nulls'] > 0:
+        if null_info["total_nulls"] > 0:
             md += f"- **Missing Values**: {null_info['total_nulls']:,} null values detected. Consider imputation or removal.\n"
 
-        total_outliers = sum(info['count'] for info in outlier_info.values())
+        total_outliers = sum(info["count"] for info in outlier_info.values())
         if total_outliers > 0:
             md += f"- **Outliers**: {total_outliers:,} outliers detected across numeric columns. Review and cap if necessary.\n"
 
@@ -366,9 +364,7 @@ class DataQualityReporter:
 
         return report_path
 
-    def save_quality_metrics_to_db(
-        self, table_name: str, metrics: Dict
-    ) -> None:
+    def save_quality_metrics_to_db(self, table_name: str, metrics: Dict) -> None:
         """Save quality metrics to database.
 
         Args:
@@ -381,32 +377,36 @@ class DataQualityReporter:
         timestamp = datetime.now()
 
         # Null metrics
-        if 'null_info' in metrics:
-            for col, pct in metrics['null_info']['null_percentages'].items():
-                records.append({
-                    'table_name': table_name,
-                    'metric_name': f'null_pct_{col}',
-                    'metric_value': pct,
-                    'threshold_value': 30.0,  # 30% threshold
-                    'status': 'pass' if pct <= 30 else 'fail',
-                    'checked_at': timestamp,
-                })
+        if "null_info" in metrics:
+            for col, pct in metrics["null_info"]["null_percentages"].items():
+                records.append(
+                    {
+                        "table_name": table_name,
+                        "metric_name": f"null_pct_{col}",
+                        "metric_value": pct,
+                        "threshold_value": 30.0,  # 30% threshold
+                        "status": "pass" if pct <= 30 else "fail",
+                        "checked_at": timestamp,
+                    }
+                )
 
         # Outlier metrics
-        if 'outlier_info' in metrics:
-            for col, info in metrics['outlier_info'].items():
-                records.append({
-                    'table_name': table_name,
-                    'metric_name': f'outliers_{col}',
-                    'metric_value': info['percentage'],
-                    'threshold_value': 10.0,  # 10% threshold
-                    'status': 'info',
-                    'checked_at': timestamp,
-                })
+        if "outlier_info" in metrics:
+            for col, info in metrics["outlier_info"].items():
+                records.append(
+                    {
+                        "table_name": table_name,
+                        "metric_name": f"outliers_{col}",
+                        "metric_value": info["percentage"],
+                        "threshold_value": 10.0,  # 10% threshold
+                        "status": "info",
+                        "checked_at": timestamp,
+                    }
+                )
 
         if records:
             df_metrics = pd.DataFrame(records)
-            db.write_table(df_metrics, 'data_quality_metrics', if_exists='append', index=False)
+            db.write_table(df_metrics, "data_quality_metrics", if_exists="append", index=False)
             logger.info(f"Saved {len(records)} quality metrics to database")
 
 
@@ -448,8 +448,8 @@ def generate_quality_report(
 
     # Save metrics to DB
     metrics = {
-        'null_info': reporter.compute_null_percentages(df),
-        'outlier_info': reporter.compute_outlier_counts(df),
+        "null_info": reporter.compute_null_percentages(df),
+        "outlier_info": reporter.compute_outlier_counts(df),
     }
     reporter.save_quality_metrics_to_db(table_name, metrics)
 

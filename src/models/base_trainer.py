@@ -110,7 +110,11 @@ class BaseTrainer(ABC):
 
     @abstractmethod
     def train(
-        self, X_train: np.ndarray, y_train: np.ndarray, X_val: Optional[np.ndarray] = None, y_val: Optional[np.ndarray] = None
+        self,
+        X_train: np.ndarray,
+        y_train: np.ndarray,
+        X_val: Optional[np.ndarray] = None,
+        y_val: Optional[np.ndarray] = None,
     ) -> None:
         """Train the model.
 
@@ -231,10 +235,9 @@ class BaseTrainer(ABC):
             logger.warning("Model does not have feature_importances_ attribute")
             return pd.DataFrame()
 
-        importance = pd.DataFrame({
-            "feature": feature_names,
-            "importance": self.model.feature_importances_
-        }).sort_values("importance", ascending=False)
+        importance = pd.DataFrame(
+            {"feature": feature_names, "importance": self.model.feature_importances_}
+        ).sort_values("importance", ascending=False)
 
         return importance
 

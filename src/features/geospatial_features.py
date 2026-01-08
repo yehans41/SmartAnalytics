@@ -69,9 +69,7 @@ class GeospatialFeatureEngineer:
 
         return R * c
 
-    def manhattan_distance(
-        self, lat1: float, lon1: float, lat2: float, lon2: float
-    ) -> float:
+    def manhattan_distance(self, lat1: float, lon1: float, lat2: float, lon2: float) -> float:
         """Calculate Manhattan distance (grid distance).
 
         Args:
@@ -149,9 +147,7 @@ class GeospatialFeatureEngineer:
 
         return df
 
-    def calculate_bearing(
-        self, lat1: float, lon1: float, lat2: float, lon2: float
-    ) -> float:
+    def calculate_bearing(self, lat1: float, lon1: float, lat2: float, lon2: float) -> float:
         """Calculate bearing/direction between two points.
 
         Args:
@@ -310,19 +306,11 @@ class GeospatialFeatureEngineer:
         df = df.copy()
 
         # Simple grid-based zones (5x5 grid)
-        lat_bins = np.linspace(
-            self.NYC_BOUNDS["lat_min"], self.NYC_BOUNDS["lat_max"], 6
-        )
-        lon_bins = np.linspace(
-            self.NYC_BOUNDS["lon_min"], self.NYC_BOUNDS["lon_max"], 6
-        )
+        lat_bins = np.linspace(self.NYC_BOUNDS["lat_min"], self.NYC_BOUNDS["lat_max"], 6)
+        lon_bins = np.linspace(self.NYC_BOUNDS["lon_min"], self.NYC_BOUNDS["lon_max"], 6)
 
-        df["pickup_zone_lat"] = pd.cut(
-            df["pickup_latitude"], bins=lat_bins, labels=False
-        )
-        df["pickup_zone_lon"] = pd.cut(
-            df["pickup_longitude"], bins=lon_bins, labels=False
-        )
+        df["pickup_zone_lat"] = pd.cut(df["pickup_latitude"], bins=lat_bins, labels=False)
+        df["pickup_zone_lon"] = pd.cut(df["pickup_longitude"], bins=lon_bins, labels=False)
 
         # Combined zone ID
         df["pickup_zone"] = (
@@ -330,16 +318,10 @@ class GeospatialFeatureEngineer:
         )
 
         if all(col in df.columns for col in ["dropoff_latitude", "dropoff_longitude"]):
-            df["dropoff_zone_lat"] = pd.cut(
-                df["dropoff_latitude"], bins=lat_bins, labels=False
-            )
-            df["dropoff_zone_lon"] = pd.cut(
-                df["dropoff_longitude"], bins=lon_bins, labels=False
-            )
+            df["dropoff_zone_lat"] = pd.cut(df["dropoff_latitude"], bins=lat_bins, labels=False)
+            df["dropoff_zone_lon"] = pd.cut(df["dropoff_longitude"], bins=lon_bins, labels=False)
             df["dropoff_zone"] = (
-                df["dropoff_zone_lat"].astype(str)
-                + "_"
-                + df["dropoff_zone_lon"].astype(str)
+                df["dropoff_zone_lat"].astype(str) + "_" + df["dropoff_zone_lon"].astype(str)
             )
 
             # Same zone indicator

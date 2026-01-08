@@ -45,9 +45,7 @@ class NYCTaxiDownloader:
         """
         return [f"{year}-{month:02d}" for month in range(start_month, end_month + 1)]
 
-    def build_download_url(
-        self, year_month: str, taxi_type: str = "yellow"
-    ) -> str:
+    def build_download_url(self, year_month: str, taxi_type: str = "yellow") -> str:
         """Build download URL for a specific month.
 
         Args:
@@ -57,15 +55,11 @@ class NYCTaxiDownloader:
         Returns:
             Download URL
         """
-        prefix = (
-            self.YELLOW_TAXI_PREFIX if taxi_type == "yellow" else self.GREEN_TAXI_PREFIX
-        )
+        prefix = self.YELLOW_TAXI_PREFIX if taxi_type == "yellow" else self.GREEN_TAXI_PREFIX
         filename = f"{prefix}{year_month}.parquet"
         return urljoin(self.BASE_URL, filename)
 
-    def download_file(
-        self, url: str, destination: Path, chunk_size: int = 8192
-    ) -> bool:
+    def download_file(self, url: str, destination: Path, chunk_size: int = 8192) -> bool:
         """Download file from URL with progress bar.
 
         Args:
@@ -98,9 +92,7 @@ class NYCTaxiDownloader:
                         pbar.update(len(chunk))
 
             file_size = destination.stat().st_size
-            logger.info(
-                f"Download complete: {destination.name} ({file_size / 1024 / 1024:.2f} MB)"
-            )
+            logger.info(f"Download complete: {destination.name} ({file_size / 1024 / 1024:.2f} MB)")
             return True
 
         except requests.exceptions.RequestException as e:
@@ -156,9 +148,7 @@ class NYCTaxiDownloader:
         months = self.get_available_months(year, start_month, end_month)
         downloaded_files = []
 
-        logger.info(
-            f"Downloading {len(months)} months of {taxi_type} taxi data for {year}"
-        )
+        logger.info(f"Downloading {len(months)} months of {taxi_type} taxi data for {year}")
 
         for year_month in months:
             filepath = self.download_month(year_month, taxi_type, force)
@@ -214,9 +204,7 @@ def download_nyc_taxi_data(
         >>> print(f"Downloaded {len(files)} files")
     """
     downloader = NYCTaxiDownloader(data_dir)
-    return downloader.download_multiple_months(
-        year, start_month, end_month, taxi_type, force
-    )
+    return downloader.download_multiple_months(year, start_month, end_month, taxi_type, force)
 
 
 if __name__ == "__main__":

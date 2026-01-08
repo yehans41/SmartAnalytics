@@ -27,6 +27,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+
 # Initialize services
 @st.cache_resource
 def get_registry():
@@ -107,9 +108,7 @@ if page == "📊 Overview":
     with col1:
         try:
             with db_manager.engine.connect() as conn:
-                result = conn.execute(
-                    text("SELECT COUNT(*) FROM feature_store")
-                ).fetchone()
+                result = conn.execute(text("SELECT COUNT(*) FROM feature_store")).fetchone()
                 feature_count = result[0] if result else 0
             st.metric("Total Features", f"{feature_count:,}")
         except:
@@ -153,9 +152,7 @@ if page == "📊 Overview":
 
             # Extract key metrics
             metrics_df = pd.DataFrame(df["metrics"].tolist())
-            display_df = pd.concat(
-                [df[["run_name", "start_time"]], metrics_df], axis=1
-            )
+            display_df = pd.concat([df[["run_name", "start_time"]], metrics_df], axis=1)
 
             st.dataframe(display_df, use_container_width=True)
         else:
@@ -168,9 +165,7 @@ if page == "📊 Overview":
             df["start_time"] = pd.to_datetime(df["start_time"])
 
             metrics_df = pd.DataFrame(df["metrics"].tolist())
-            display_df = pd.concat(
-                [df[["run_name", "start_time"]], metrics_df], axis=1
-            )
+            display_df = pd.concat([df[["run_name", "start_time"]], metrics_df], axis=1)
 
             st.dataframe(display_df, use_container_width=True)
         else:
@@ -184,9 +179,7 @@ if page == "📊 Overview":
 elif page == "🤖 Model Predictions":
     st.title("🤖 Model Predictions")
 
-    prediction_type = st.radio(
-        "Select Prediction Type", ["Fare Amount", "Tip Classification"]
-    )
+    prediction_type = st.radio("Select Prediction Type", ["Fare Amount", "Tip Classification"])
 
     if prediction_type == "Fare Amount":
         st.subheader("💵 Predict Taxi Fare")
@@ -228,9 +221,7 @@ elif page == "🤖 Model Predictions":
         col3, col4, col5 = st.columns(3)
 
         with col3:
-            passenger_count = st.number_input(
-                "Passengers", min_value=1, max_value=6, value=1
-            )
+            passenger_count = st.number_input("Passengers", min_value=1, max_value=6, value=1)
 
         with col4:
             hour = st.slider("Hour of Day", 0, 23, 12)
@@ -265,9 +256,7 @@ elif page == "🤖 Model Predictions":
                     }
 
                     # Get best model
-                    best = registry.get_best_model(
-                        "nyc_taxi_analysis", metric="rmse"
-                    )
+                    best = registry.get_best_model("nyc_taxi_analysis", metric="rmse")
 
                     if best:
                         model = registry.load_model_by_run_id(best["run_id"])
@@ -379,8 +368,7 @@ elif page == "📈 Model Comparison":
                 # Best model highlight
                 best_idx = (
                     metrics_df[selected_metric].idxmin()
-                    if "error" in selected_metric.lower()
-                    or "loss" in selected_metric.lower()
+                    if "error" in selected_metric.lower() or "loss" in selected_metric.lower()
                     else metrics_df[selected_metric].idxmax()
                 )
                 best_model = df.iloc[best_idx]["run_name"]

@@ -42,9 +42,7 @@ class DatabaseManager:
                 echo=False,
             )
 
-            self.SessionLocal = sessionmaker(
-                autocommit=False, autoflush=False, bind=self.engine
-            )
+            self.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
 
             logger.info(f"Connected to database: {db_config.database}")
 
