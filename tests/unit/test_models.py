@@ -75,7 +75,7 @@ class TestRegressionModels:
     def test_linear_regression_init(self):
         """Test LinearRegressionTrainer initialization."""
         trainer = LinearRegressionTrainer()
-        assert trainer.model_name == "LinearRegression"
+        assert trainer.model_name == "linear_regression"
         assert trainer.model_type == "regression"
 
     def test_linear_regression_build_model(self):
@@ -88,6 +88,7 @@ class TestRegressionModels:
         """Test model training."""
         X, y = sample_regression_data
         trainer = LinearRegressionTrainer()
+        trainer.model = trainer.build_model()
         trainer.train(X, y)
 
         assert trainer.model is not None
@@ -97,6 +98,7 @@ class TestRegressionModels:
         """Test model evaluation."""
         X, y = sample_regression_data
         trainer = LinearRegressionTrainer()
+        trainer.model = trainer.build_model()
         trainer.train(X, y)
 
         metrics = trainer.evaluate(X, y)
@@ -110,13 +112,13 @@ class TestRegressionModels:
     def test_ridge_regression_init(self):
         """Test RidgeRegressionTrainer initialization."""
         trainer = RidgeRegressionTrainer(alpha=1.0)
-        assert trainer.model_name == "RidgeRegression"
+        assert trainer.model_name == "ridge_regression"
         assert trainer.alpha == 1.0
 
     def test_random_forest_regressor_init(self):
         """Test RandomForestRegressorTrainer initialization."""
         trainer = RandomForestRegressorTrainer(n_estimators=50, max_depth=10)
-        assert trainer.model_name == "RandomForestRegressor"
+        assert trainer.model_name == "random_forest_regressor"
         assert trainer.n_estimators == 50
         assert trainer.max_depth == 10
 
@@ -336,6 +338,7 @@ class TestBaseTrainer:
 
         X, y = sample_regression_data
         trainer = LinearRegressionTrainer()
+        trainer.model = trainer.build_model()
         trainer.train(X, y)
 
         # Log to MLflow

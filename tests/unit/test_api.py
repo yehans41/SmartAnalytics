@@ -80,7 +80,7 @@ class TestHealthEndpoint:
     def test_health_check_db_failure(self, mock_db, client):
         """Test health check with database failure."""
         # Mock database failure
-        mock_db.get_connection.side_effect = Exception("DB connection failed")
+        mock_db.engine.connect.side_effect = Exception("DB connection failed")
 
         response = client.get("/health")
 
